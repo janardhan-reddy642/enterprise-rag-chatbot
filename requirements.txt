@@ -1,4 +1,10 @@
-venv/
-__pycache__/
-*.pyc
-.env
+streamlit
+langchain
+langchain-community
+langchain-text-splitters
+langchain-huggingface
+langchain-chroma
+chromadb
+sentence-transformers
+openai
+pypdf
