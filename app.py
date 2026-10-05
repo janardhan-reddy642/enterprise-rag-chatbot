@@ -1,6 +1,8 @@
+
+# ============================================================
 # RAG CHATBOT
 # FAST RAG + MODERN UI + BUTTONS + IMAGE GENERATOR
-# Streamlit + Chroma + MiniLM + Cloud LLM
+# Streamlit + Chroma + MiniLM + Ollama + Mistral
 # ============================================================
 
 import time
@@ -12,7 +14,7 @@ import streamlit as st
 
 from langchain_chroma import Chroma
 from langchain_huggingface import HuggingFaceEmbeddings
-from openai import OpenAI
+from langchain_ollama import OllamaLLM
 
 
 # ============================================================
@@ -35,12 +37,10 @@ BASE_DIR = Path(__file__).resolve().parent
 
 DATA_DIR = BASE_DIR / "data"
 CHROMA_DIR = BASE_DIR / "chroma_db"
-
 UPLOAD_DIR = DATA_DIR / "uploaded"
 
 EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
-
-GROQ_MODEL = "openai/gpt-oss-20b"
+OLLAMA_MODEL = "mistral:latest"
 
 
 # ============================================================
@@ -71,10 +71,6 @@ st.markdown(
     """
     <style>
 
-    /* ========================================================
-       GLOBAL
-       ======================================================== */
-
     .stApp {
         background:
             radial-gradient(
@@ -94,11 +90,6 @@ st.markdown(
         padding-bottom: 2rem;
         max-width: 1450px;
     }
-
-
-    /* ========================================================
-       CARDS
-       ======================================================== */
 
     .card {
         padding: 20px;
@@ -120,11 +111,6 @@ st.markdown(
         opacity: 0.72;
         line-height: 1.5;
     }
-
-
-    /* ========================================================
-       FEATURE CARDS
-       ======================================================== */
 
     .feature {
         padding: 18px;
@@ -150,20 +136,10 @@ st.markdown(
         margin-top: 5px;
     }
 
-
-    /* ========================================================
-       SIDEBAR
-       ======================================================== */
-
     section[data-testid="stSidebar"] {
         min-width: 275px;
         max-width: 310px;
     }
-
-
-    /* ========================================================
-       BUTTONS
-       ======================================================== */
 
     .stButton > button {
         width: 100%;
@@ -177,28 +153,13 @@ st.markdown(
         transform: translateY(-1px);
     }
 
-
-    /* ========================================================
-       CHAT
-       ======================================================== */
-
     [data-testid="stChatMessage"] {
         border-radius: 15px;
     }
 
-
-    /* ========================================================
-       INPUT
-       ======================================================== */
-
     [data-testid="stChatInput"] {
         border-radius: 14px;
     }
-
-
-    /* ========================================================
-       METRICS
-       ======================================================== */
 
     [data-testid="stMetric"] {
         border: 1px solid rgba(128,128,128,0.2);
@@ -206,21 +167,11 @@ st.markdown(
         border-radius: 14px;
     }
 
-
-    /* ========================================================
-       IMAGE
-       ======================================================== */
-
     .image-box {
         border-radius: 18px;
         overflow: hidden;
         border: 1px solid rgba(128,128,128,0.25);
     }
-
-
-    /* ========================================================
-       HIDE STREAMLIT MENU
-       ======================================================== */
 
     #MainMenu {
         visibility: hidden;
@@ -238,7 +189,6 @@ st.markdown(
 
 # ============================================================
 # LOAD EMBEDDINGS
-# CACHED
 # ============================================================
 
 @st.cache_resource(show_spinner=False)
@@ -257,7 +207,6 @@ def load_embeddings():
 
 # ============================================================
 # LOAD CHROMA
-# CACHED
 # ============================================================
 
 @st.cache_resource(show_spinner=False)
@@ -281,8 +230,7 @@ def load_vector_database():
 
 
 # ============================================================
-# LOAD CLOUD AI
-# CACHED
+# LOAD LOCAL OLLAMA + MISTRAL
 # ============================================================
 
 @st.cache_resource(show_spinner=False)
@@ -290,14 +238,8 @@ def load_llm():
 
     try:
 
-        api_key = st.secrets.get("GROQ_API_KEY")
-
-        if not api_key:
-            return None
-
-        return OpenAI(
-            api_key=api_key,
-            base_url="https://api.groq.com/openai/v1"
+        return OllamaLLM(
+            model=OLLAMA_MODEL
         )
 
     except Exception:
@@ -314,23 +256,18 @@ try:
     vector_db = load_vector_database()
 
     if vector_db is not None:
-
         st.session_state.system_ready = True
-
     else:
-
         st.session_state.system_ready = False
 
 except Exception:
 
     vector_db = None
-
     st.session_state.system_ready = False
 
 
 # ============================================================
 # IMAGE GENERATOR
-# LOCAL SVG GENERATOR
 # ============================================================
 
 def generate_local_image(prompt):
@@ -378,12 +315,10 @@ def generate_local_image(prompt):
 
         </defs>
 
-
         <rect
             width="1200"
             height="700"
             fill="url(#bg)"/>
-
 
         <circle
             cx="170"
@@ -393,7 +328,6 @@ def generate_local_image(prompt):
             opacity="0.35"
             filter="url(#blur)"/>
 
-
         <circle
             cx="1030"
             cy="560"
@@ -401,7 +335,6 @@ def generate_local_image(prompt):
             fill="#D16CFF"
             opacity="0.30"
             filter="url(#blur)"/>
-
 
         <rect
             x="100"
@@ -411,7 +344,6 @@ def generate_local_image(prompt):
             rx="35"
             fill="rgba(255,255,255,0.07)"
             stroke="rgba(255,255,255,0.22)"/>
-
 
         <text
             x="600"
@@ -426,7 +358,6 @@ def generate_local_image(prompt):
 
         </text>
 
-
         <text
             x="600"
             y="300"
@@ -438,7 +369,6 @@ def generate_local_image(prompt):
             RAG Chatbot
 
         </text>
-
 
         <text
             x="600"
@@ -452,7 +382,6 @@ def generate_local_image(prompt):
 
         </text>
 
-
         <rect
             x="390"
             y="470"
@@ -461,7 +390,6 @@ def generate_local_image(prompt):
             rx="35"
             fill="rgba(255,255,255,0.13)"
             stroke="rgba(255,255,255,0.3)"/>
-
 
         <text
             x="600"
@@ -491,9 +419,7 @@ def svg_to_data_uri(svg):
         svg.encode("utf-8")
     ).decode("utf-8")
 
-    return (
-        f"data:image/svg+xml;base64,{encoded}"
-    )
+    return f"data:image/svg+xml;base64,{encoded}"
 
 
 # ============================================================
@@ -504,18 +430,11 @@ with st.sidebar:
 
     st.markdown("## 🤖 RAG Chatbot")
 
-    st.caption("Fast RAG + AI")
+    st.caption("Fast RAG + Local AI")
 
     st.markdown("---")
 
-
-    # ========================================================
-    # KNOWLEDGE BASE
-    # ========================================================
-
-    st.markdown(
-        "### 📚 Knowledge Base"
-    )
+    st.markdown("### 📚 Knowledge Base")
 
     st.markdown(
         """
@@ -535,57 +454,28 @@ with st.sidebar:
         """
     )
 
-
     st.markdown("---")
-
-
-    # ========================================================
-    # SYSTEM
-    # ========================================================
 
     st.markdown("### ⚙️ System")
 
     if st.session_state.system_ready:
 
-        st.success(
-            "🟢 RAG System Online"
-        )
+        st.success("🟢 RAG System Online")
 
     else:
 
-        st.error(
-            "🔴 RAG System Offline"
-        )
-
+        st.error("🔴 RAG System Offline")
 
     st.markdown("---")
-
-
-    # ========================================================
-    # MODELS
-    # ========================================================
 
     st.markdown("### 🧠 Models")
 
-    st.caption(
-        f"LLM: `{GROQ_MODEL}`"
-    )
-
-    st.caption(
-        "Embedding: MiniLM"
-    )
-
-    st.caption(
-        "Vector DB: Chroma"
-    )
-
+    st.caption(f"LLM: `{OLLAMA_MODEL}`")
+    st.caption("Embedding: MiniLM")
+    st.caption("Vector DB: Chroma")
+    st.caption("Runtime: Ollama")
 
     st.markdown("---")
-
-
-    # ========================================================
-    # CLEAR CHAT
-    # ========================================================
 
     if st.button(
         "🗑️ Clear Chat",
@@ -596,11 +486,6 @@ with st.sidebar:
 
         st.rerun()
 
-
-    # ========================================================
-    # CLEAR CACHE
-    # ========================================================
-
     if st.button(
         "⚡ Clear Answer Cache",
         use_container_width=True
@@ -608,14 +493,7 @@ with st.sidebar:
 
         st.session_state.answer_cache = {}
 
-        st.success(
-            "Answer cache cleared."
-        )
-
-
-    # ========================================================
-    # RELOAD
-    # ========================================================
+        st.success("Answer cache cleared.")
 
     if st.button(
         "🔄 Reload System",
@@ -633,7 +511,6 @@ with st.sidebar:
 
 col1, col2, col3, col4 = st.columns(4)
 
-
 with col1:
 
     st.metric(
@@ -643,7 +520,6 @@ with col1:
         else "Offline"
     )
 
-
 with col2:
 
     st.metric(
@@ -651,14 +527,12 @@ with col2:
         "Chroma"
     )
 
-
 with col3:
 
     st.metric(
         "AI Model",
-        "Cloud LLM"
+        "Mistral Local"
     )
-
 
 with col4:
 
@@ -676,7 +550,6 @@ st.markdown("")
 # ============================================================
 
 c1, c2, c3, c4 = st.columns(4)
-
 
 with c1:
 
@@ -701,7 +574,6 @@ with c1:
         unsafe_allow_html=True
     )
 
-
 with c2:
 
     st.markdown(
@@ -725,7 +597,6 @@ with c2:
         unsafe_allow_html=True
     )
 
-
 with c3:
 
     st.markdown(
@@ -737,18 +608,17 @@ with c3:
         </div>
 
         <div class="feature-title">
-        Cloud AI
+        Local AI
         </div>
 
         <div class="feature-text">
-        Answers generated using the cloud LLM.
+        Answers generated using Mistral through Ollama.
         </div>
 
         </div>
         """,
         unsafe_allow_html=True
     )
-
 
 with c4:
 
@@ -781,16 +651,11 @@ st.markdown("---")
 # QUICK ACTION BUTTONS
 # ============================================================
 
-st.markdown(
-    "### ⚡ Quick Actions"
-)
-
+st.markdown("### ⚡ Quick Actions")
 
 q1, q2, q3, q4 = st.columns(4)
 
-
 quick_question = None
-
 
 with q1:
 
@@ -803,7 +668,6 @@ with q1:
             "What is the company leave policy?"
         )
 
-
 with q2:
 
     if st.button(
@@ -815,7 +679,6 @@ with q2:
             "What is the work from home policy?"
         )
 
-
 with q3:
 
     if st.button(
@@ -826,7 +689,6 @@ with q3:
         quick_question = (
             "What are the company security policies?"
         )
-
 
 with q4:
 
@@ -844,10 +706,7 @@ with q4:
 # RETRIEVE DOCUMENTS
 # ============================================================
 
-def retrieve_documents(
-    question,
-    k=2
-):
+def retrieve_documents(question, k=2):
 
     if vector_db is None:
 
@@ -855,10 +714,12 @@ def retrieve_documents(
 
     try:
 
-        return vector_db.similarity_search(
+        documents = vector_db.similarity_search(
             question,
             k=k
         )
+
+        return documents
 
     except Exception:
 
@@ -869,9 +730,28 @@ def retrieve_documents(
 # BUILD CONTEXT
 # ============================================================
 
-def build_context(
-    documents
-):
+def get_document_source(doc):
+
+    metadata = doc.metadata or {}
+
+    source = (
+        metadata.get("source")
+        or metadata.get("file_name")
+        or metadata.get("filename")
+        or metadata.get("path")
+        or metadata.get("file_path")
+        or metadata.get("document")
+        or metadata.get("name")
+    )
+
+    if source:
+
+        return str(source)
+
+    return "Unknown document"
+
+
+def build_context(documents):
 
     if not documents:
 
@@ -879,33 +759,15 @@ def build_context(
 
     parts = []
 
-
-    for index, doc in enumerate(
-        documents
-    ):
+    for index, doc in enumerate(documents):
 
         text = (
-            doc.page_content
-            .strip()
-        )
+            doc.page_content or ""
+        ).strip()
 
-        metadata = (
-            doc.metadata or {}
-        )
-
-
-        source = (
-            metadata.get("source")
-            or metadata.get("file_name")
-            or metadata.get("filename")
-            or "Unknown document"
-        )
-
-
-        # Keep context small
+        source = get_document_source(doc)
 
         text = text[:1200]
-
 
         parts.append(
             f"""
@@ -916,7 +778,6 @@ SOURCE: {source}
 """
         )
 
-
     return "\n".join(parts)
 
 
@@ -924,37 +785,17 @@ SOURCE: {source}
 # EXTRACT SOURCES
 # ============================================================
 
-def extract_sources(
-    documents
-):
+def extract_sources(documents):
 
     sources = []
 
-
     for doc in documents:
 
-        metadata = (
-            doc.metadata or {}
-        )
-
-
-        source = (
-            metadata.get("source")
-            or metadata.get("file_name")
-            or metadata.get("filename")
-            or "Unknown"
-        )
-
-
-        source = str(source)
-
+        source = get_document_source(doc)
 
         if source not in sources:
 
-            sources.append(
-                source
-            )
-
+            sources.append(source)
 
     return sources
 
@@ -963,21 +804,24 @@ def extract_sources(
 # CREATE PROMPT
 # ============================================================
 
-def create_prompt(
-    question,
-    context
-):
+def create_prompt(question, context):
 
     return f"""
-Answer the user's question using ONLY the context.
+You are an enterprise RAG assistant.
+
+Answer the user's question using the provided context.
+
+Use ONLY the information available in the context.
 
 Do not invent information.
 
-If the answer is not available, say:
+If the answer is not available in the context, say:
 
 "I could not find this information in the available enterprise documents."
 
-Keep the answer short and useful.
+Give a clear and useful answer.
+
+Keep the answer concise.
 
 CONTEXT:
 {context}
@@ -993,9 +837,7 @@ ANSWER:
 # GENERATE ANSWER
 # ============================================================
 
-def generate_answer(
-    question
-):
+def generate_answer(question):
 
     if vector_db is None:
 
@@ -1004,29 +846,28 @@ def generate_answer(
             []
         )
 
-
     # ========================================================
     # CACHE CHECK
     # ========================================================
 
-    question_key = (
-        question.strip().lower()
-    )
-
+    question_key = question.strip().lower()
 
     if question_key in st.session_state.answer_cache:
 
-        cached = (
-            st.session_state.answer_cache[
-                question_key
-            ]
-        )
+        cached = st.session_state.answer_cache[
+            question_key
+        ]
 
         return (
-            cached["answer"],
-            cached["sources"]
+            cached.get(
+                "answer",
+                "No answer was stored in cache."
+            ),
+            cached.get(
+                "sources",
+                []
+            )
         )
-
 
     try:
 
@@ -1038,7 +879,6 @@ def generate_answer(
             question,
             k=2
         )
-
 
         if not documents:
 
@@ -1053,15 +893,11 @@ def generate_answer(
                 []
             )
 
-
         # ====================================================
         # CONTEXT
         # ====================================================
 
-        context = build_context(
-            documents
-        )
-
+        context = build_context(documents)
 
         # ====================================================
         # PROMPT
@@ -1072,68 +908,48 @@ def generate_answer(
             context
         )
 
-
         # ====================================================
-        # LOAD CLOUD LLM
+        # LOAD LOCAL OLLAMA
         # ====================================================
 
         llm = load_llm()
 
-
         if llm is None:
 
             return (
-                "Cloud AI is not configured. "
-                "Please add GROQ_API_KEY in Streamlit Secrets.",
-                []
+                "Local AI is not available. "
+                "Please make sure Ollama is running "
+                "and the Mistral model is installed.",
+                extract_sources(documents)
             )
 
+        # ====================================================
+        # GENERATE ANSWER
+        # ====================================================
+
+        answer = llm.invoke(prompt)
+
+        answer = str(answer).strip()
 
         # ====================================================
-        # GENERATE
+        # EMPTY ANSWER PROTECTION
         # ====================================================
 
-        response = llm.chat.completions.create(
+        if not answer:
 
-            model=GROQ_MODEL,
-
-            messages=[
-                {
-                    "role": "user",
-                    "content": prompt
-                }
-            ],
-
-            temperature=0,
-
-            max_tokens=120
-        )
-
-
-        answer = (
-            response
-            .choices[0]
-            .message
-            .content
-        )
-
-
-        answer = str(
-            answer
-        ).strip()
-
+            answer = (
+                "The AI model returned an empty answer. "
+                "Please try the question again."
+            )
 
         # ====================================================
         # SOURCES
         # ====================================================
 
-        sources = extract_sources(
-            documents
-        )
-
+        sources = extract_sources(documents)
 
         # ====================================================
-        # CACHE RESULT
+        # CACHE
         # ====================================================
 
         result = {
@@ -1141,23 +957,37 @@ def generate_answer(
             "sources": sources
         }
 
-
         st.session_state.answer_cache[
             question_key
         ] = result
-
 
         return (
             answer,
             sources
         )
 
-
     except Exception as e:
+
+        sources = []
+
+        try:
+
+            documents = retrieve_documents(
+                question,
+                k=2
+            )
+
+            sources = extract_sources(
+                documents
+            )
+
+        except Exception:
+
+            pass
 
         return (
             f"Sorry, an error occurred:\n\n{e}",
-            []
+            sources
         )
 
 
@@ -1168,18 +998,11 @@ def generate_answer(
 for message in st.session_state.messages:
 
     role = message["role"]
-
     content = message["content"]
 
+    with st.chat_message(role):
 
-    with st.chat_message(
-        role
-    ):
-
-        st.markdown(
-            content
-        )
-
+        st.markdown(content)
 
         if (
             role == "assistant"
@@ -1223,22 +1046,15 @@ if question:
 
     question = question.strip()
 
-
     if question:
 
-        # ====================================================
-        # DUPLICATE PROTECTION
-        # ====================================================
-
         duplicate = False
-
 
         if st.session_state.messages:
 
             last_message = (
                 st.session_state.messages[-1]
             )
-
 
             if (
                 last_message["role"] == "user"
@@ -1248,7 +1064,6 @@ if question:
             ):
 
                 duplicate = True
-
 
         if not duplicate:
 
@@ -1263,28 +1078,17 @@ if question:
                 }
             )
 
+            with st.chat_message("user"):
 
-            with st.chat_message(
-                "user"
-            ):
-
-                st.markdown(
-                    question
-                )
-
+                st.markdown(question)
 
             # ================================================
             # ASSISTANT
             # ================================================
 
-            with st.chat_message(
-                "assistant"
-            ):
+            with st.chat_message("assistant"):
 
-                question_key = (
-                    question.lower().strip()
-                )
-
+                question_key = question.lower().strip()
 
                 # ============================================
                 # CACHE HIT
@@ -1301,27 +1105,61 @@ if question:
                         ]
                     )
 
-
-                    answer = (
-                        cached["answer"]
+                    answer = cached.get(
+                        "answer",
+                        ""
                     )
 
-                    sources = (
-                        cached["sources"]
+                    sources = cached.get(
+                        "sources",
+                        []
                     )
 
+                    # ========================================
+                    # EMPTY CACHE PROTECTION
+                    # ========================================
 
-                    st.caption(
-                        "⚡ Instant answer from cache"
-                    )
+                    if not str(answer).strip():
 
+                        del st.session_state.answer_cache[
+                            question_key
+                        ]
+
+                        start_time = time.time()
+
+                        with st.spinner(
+                            "🔎 Searching knowledge base..."
+                        ):
+
+                            answer, sources = (
+                                generate_answer(
+                                    question
+                                )
+                            )
+
+                        elapsed = (
+                            time.time()
+                            - start_time
+                        )
+
+                        st.caption(
+                            f"⚡ Response time: "
+                            f"{elapsed:.2f} seconds"
+                        )
+
+                    else:
+
+                        st.caption(
+                            "⚡ Instant answer from cache"
+                        )
+
+                # ============================================
+                # NEW QUESTION
+                # ============================================
 
                 else:
 
-                    start_time = (
-                        time.time()
-                    )
-
+                    start_time = time.time()
 
                     with st.spinner(
                         "🔎 Searching knowledge base..."
@@ -1333,30 +1171,26 @@ if question:
                             )
                         )
 
-
                     elapsed = (
                         time.time()
                         - start_time
                     )
-
 
                     st.caption(
                         f"⚡ Response time: "
                         f"{elapsed:.2f} seconds"
                     )
 
-
                 # ============================================
                 # DISPLAY ANSWER
                 # ============================================
 
-                st.markdown(
-                    answer
-                )
+                st.markdown("### 🤖 Answer")
 
+                st.markdown(answer)
 
                 # ============================================
-                # SOURCES
+                # DISPLAY SOURCES
                 # ============================================
 
                 if sources:
@@ -1371,6 +1205,11 @@ if question:
                                 f"- 📄 `{source}`"
                             )
 
+                else:
+
+                    st.caption(
+                        "📚 No document source metadata was found."
+                    )
 
             # =================================================
             # SAVE ASSISTANT MESSAGE
@@ -1391,7 +1230,6 @@ if question:
 
 st.markdown("---")
 
-
 with st.expander(
     "🎨 AI Image Studio",
     expanded=False
@@ -1409,16 +1247,13 @@ with st.expander(
         """
     )
 
-
     image_prompt = st.text_input(
         "Image description",
         value=st.session_state.image_prompt,
         placeholder="Describe the image you want..."
     )
 
-
     ic1, ic2 = st.columns(2)
-
 
     with ic1:
 
@@ -1427,7 +1262,6 @@ with st.expander(
             use_container_width=True
         )
 
-
     with ic2:
 
         clear_image_button = st.button(
@@ -1435,23 +1269,12 @@ with st.expander(
             use_container_width=True
         )
 
-
-    # ========================================================
-    # CLEAR IMAGE
-    # ========================================================
-
     if clear_image_button:
 
         st.session_state.generated_image = None
-
         st.session_state.image_prompt = ""
 
         st.rerun()
-
-
-    # ========================================================
-    # GENERATE IMAGE
-    # ========================================================
 
     if generate_image_button:
 
@@ -1471,32 +1294,18 @@ with st.expander(
                     image_prompt
                 )
 
-
-                st.session_state.generated_image = (
-                    svg
-                )
-
-
-                st.session_state.image_prompt = (
-                    image_prompt
-                )
-
+                st.session_state.generated_image = svg
+                st.session_state.image_prompt = image_prompt
 
             st.success(
                 "Image generated successfully!"
             )
-
-
-    # ========================================================
-    # DISPLAY IMAGE
-    # ========================================================
 
     if st.session_state.generated_image:
 
         image_uri = svg_to_data_uri(
             st.session_state.generated_image
         )
-
 
         st.markdown(
             f"""
@@ -1511,7 +1320,6 @@ with st.expander(
             """,
             unsafe_allow_html=True
         )
-
 
         st.download_button(
             "⬇️ Download Generated Image",
@@ -1528,7 +1336,6 @@ with st.expander(
 
 st.markdown("---")
 
-
 with st.expander(
     "📤 Upload Documents"
 ):
@@ -1543,7 +1350,6 @@ with st.expander(
         """
     )
 
-
     uploaded_files = st.file_uploader(
         "Choose PDF/TXT files",
         type=[
@@ -1553,7 +1359,6 @@ with st.expander(
         accept_multiple_files=True
     )
 
-
     if uploaded_files:
 
         UPLOAD_DIR.mkdir(
@@ -1561,14 +1366,12 @@ with st.expander(
             exist_ok=True
         )
 
-
         for uploaded_file in uploaded_files:
 
             file_path = (
                 UPLOAD_DIR
                 / uploaded_file.name
             )
-
 
             try:
 
@@ -1581,12 +1384,10 @@ with st.expander(
                         uploaded_file.getbuffer()
                     )
 
-
                 st.success(
                     f"✅ Uploaded: "
                     f"{uploaded_file.name}"
                 )
-
 
             except Exception as e:
 
@@ -1600,7 +1401,6 @@ with st.expander(
 # ============================================================
 
 st.markdown("---")
-
 
 with st.expander(
     "📚 Knowledge Base"
@@ -1630,31 +1430,20 @@ with st.expander(
             "friends"
     }
 
-
     cols = st.columns(2)
-
 
     for index, (
         display_name,
         folder_name
-    ) in enumerate(
-        categories.items()
-    ):
+    ) in enumerate(categories.items()):
 
-        folder = (
-            DATA_DIR
-            / folder_name
-        )
+        folder = DATA_DIR / folder_name
 
-
-        with cols[
-            index % 2
-        ]:
+        with cols[index % 2]:
 
             st.markdown(
                 f"### {display_name}"
             )
-
 
             if folder.exists():
 
@@ -1665,7 +1454,6 @@ with st.expander(
                         for file in folder.iterdir()
                         if file.is_file()
                     ]
-
 
                     if files:
 
@@ -1681,13 +1469,11 @@ with st.expander(
                             "No documents"
                         )
 
-
                 except Exception:
 
                     st.caption(
                         "Unable to read folder"
                     )
-
 
             else:
 
@@ -1701,7 +1487,6 @@ with st.expander(
 # ============================================================
 
 st.markdown("---")
-
 
 with st.expander(
     "⚙️ RAG System Architecture"
@@ -1745,7 +1530,7 @@ with st.expander(
 
         ↓
 
-        **9️⃣ Cloud LLM**
+        **9️⃣ Ollama + Mistral Local LLM**
 
         ↓
 
@@ -1760,9 +1545,9 @@ with st.expander(
 
 st.markdown("---")
 
-
 st.caption(
     "🤖 RAG Chatbot | "
-    "RAG + Chroma + HuggingFace + Cloud LLM | "
-    "Fast AI"
+    "RAG + Chroma + HuggingFace + Ollama + Mistral | "
+    "Fast Local AI"
 )
+
