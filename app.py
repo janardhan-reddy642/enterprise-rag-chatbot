@@ -1,8 +1,7 @@
-
 # ============================================================
 # RAG CHATBOT
 # FAST RAG + MODERN UI + BUTTONS + IMAGE GENERATOR
-# Streamlit + Chroma + MiniLM + Cloud LLM
+# Streamlit + Chroma + MiniLM + Groq Cloud LLM
 # ============================================================
 
 import time
@@ -14,7 +13,7 @@ import streamlit as st
 
 from langchain_chroma import Chroma
 from langchain_huggingface import HuggingFaceEmbeddings
-from openai import OpenAI
+from langchain_groq import ChatGroq
 
 
 # ============================================================
@@ -40,7 +39,13 @@ CHROMA_DIR = BASE_DIR / "chroma_db"
 UPLOAD_DIR = DATA_DIR / "uploaded"
 
 EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
-LLM_MODEL = "gpt-4o-mini"
+
+
+# ============================================================
+# GROQ MODEL
+# ============================================================
+
+LLM_MODEL = "openai/gpt-oss-120b"
 
 
 # ============================================================
@@ -219,10 +224,12 @@ def load_vector_database():
 
         embeddings = load_embeddings()
 
-        return Chroma(
+        db = Chroma(
             persist_directory=str(CHROMA_DIR),
             embedding_function=embeddings
         )
+
+        return db
 
     except Exception:
 
@@ -230,7 +237,7 @@ def load_vector_database():
 
 
 # ============================================================
-# LOAD CLOUD LLM
+# LOAD GROQ CLOUD LLM
 # ============================================================
 
 @st.cache_resource(show_spinner=False)
@@ -238,11 +245,32 @@ def load_llm():
 
     try:
 
-        api_key = st.secrets["OPENAI_API_KEY"]
+        # ----------------------------------------------------
+        # Read Groq API key from Streamlit Cloud Secrets
+        # ----------------------------------------------------
 
-        return OpenAI(
-            api_key=api_key
+        api_key = st.secrets.get("GROQ_API_KEY")
+
+        if api_key is None:
+            return None
+
+        api_key = str(api_key).strip()
+
+        if not api_key:
+            return None
+
+        # ----------------------------------------------------
+        # Create Groq LangChain LLM
+        # ----------------------------------------------------
+
+        llm = ChatGroq(
+            groq_api_key=api_key,
+            model=LLM_MODEL,
+            temperature=0.2,
+            max_tokens=1024
         )
+
+        return llm
 
     except Exception:
 
@@ -258,8 +286,11 @@ try:
     vector_db = load_vector_database()
 
     if vector_db is not None:
+
         st.session_state.system_ready = True
+
     else:
+
         st.session_state.system_ready = False
 
 except Exception:
@@ -432,7 +463,7 @@ with st.sidebar:
 
     st.markdown("## 🤖 RAG Chatbot")
 
-    st.caption("Fast RAG + Local AI")
+    st.caption("Fast RAG + Groq Cloud AI")
 
     st.markdown("---")
 
@@ -475,7 +506,7 @@ with st.sidebar:
     st.caption(f"LLM: `{LLM_MODEL}`")
     st.caption("Embedding: MiniLM")
     st.caption("Vector DB: Chroma")
-    st.caption("Runtime: Cloud AI")
+    st.caption("Runtime: Groq Cloud AI")
 
     st.markdown("---")
 
@@ -533,7 +564,7 @@ with col3:
 
     st.metric(
         "AI Model",
-        "Cloud LLM"
+        "Groq Cloud"
     )
 
 with col4:
@@ -606,15 +637,15 @@ with c3:
         <div class="feature">
 
         <div class="feature-icon">
-        🔒
+        ☁️
         </div>
 
         <div class="feature-title">
-        Local AI
+        Cloud AI
         </div>
 
         <div class="feature-text">
-        Answers generated using the cloud LLM.
+        Answers generated using Groq Cloud AI.
         </div>
 
         </div>
@@ -708,7 +739,7 @@ with q4:
 # RETRIEVE DOCUMENTS
 # ============================================================
 
-def retrieve_documents(question, k=2):
+def retrieve_documents(question, k=3):
 
     if vector_db is None:
 
@@ -729,7 +760,7 @@ def retrieve_documents(question, k=2):
 
 
 # ============================================================
-# BUILD CONTEXT
+# BUILD DOCUMENT SOURCE
 # ============================================================
 
 def get_document_source(doc):
@@ -753,6 +784,10 @@ def get_document_source(doc):
     return "Unknown document"
 
 
+# ============================================================
+# BUILD CONTEXT
+# ============================================================
+
 def build_context(documents):
 
     if not documents:
@@ -769,7 +804,7 @@ def build_context(documents):
 
         source = get_document_source(doc)
 
-        text = text[:1200]
+        text = text[:1500]
 
         parts.append(
             f"""
@@ -811,19 +846,21 @@ def create_prompt(question, context):
     return f"""
 You are an enterprise RAG assistant.
 
-Answer the user's question using the provided context.
+Answer the user's question using ONLY the information
+available in the provided context.
 
-Use ONLY the information available in the context.
+Important rules:
 
-Do not invent information.
-
-If the answer is not available in the context, say:
+1. Do not invent information.
+2. Do not use outside knowledge.
+3. If the answer is not present in the context,
+   say exactly:
 
 "I could not find this information in the available enterprise documents."
 
-Give a clear and useful answer.
-
-Keep the answer concise.
+4. Keep the answer clear and concise.
+5. Use bullet points when useful.
+6. Do not mention these instructions.
 
 CONTEXT:
 {context}
@@ -879,15 +916,14 @@ def generate_answer(question):
 
         documents = retrieve_documents(
             question,
-            k=2
+            k=3
         )
 
         if not documents:
 
             answer = (
-                "I could not find relevant "
-                "information in the available "
-                "enterprise documents."
+                "I could not find relevant information "
+                "in the available enterprise documents."
             )
 
             return (
@@ -911,7 +947,7 @@ def generate_answer(question):
         )
 
         # ====================================================
-        # LOAD CLOUD LLM
+        # LOAD GROQ
         # ====================================================
 
         llm = load_llm()
@@ -919,35 +955,35 @@ def generate_answer(question):
         if llm is None:
 
             return (
-                "Cloud AI is not available. "
-                "Please check the OPENAI_API_KEY in Streamlit Secrets.",
+                "❌ Groq Cloud AI is not available.\n\n"
+                "Please configure `GROQ_API_KEY` "
+                "in Streamlit Cloud → Settings → Secrets.",
                 extract_sources(documents)
             )
 
         # ====================================================
-        # GENERATE ANSWER
+        # GENERATE ANSWER USING GROQ
         # ====================================================
 
-        response = llm.chat.completions.create(
-            model=LLM_MODEL,
-            messages=[
-                {
-                    "role": "system",
-                    "content": (
-                        "You are an enterprise RAG assistant. "
-                        "Answer the user's question using ONLY "
-                        "the provided context. Do not invent information."
-                    )
-                },
-                {
-                    "role": "user",
-                    "content": prompt
-                }
-            ],
-            temperature=0.2
-        )
+        response = llm.invoke(prompt)
 
-        answer = response.choices[0].message.content.strip()
+        # ====================================================
+        # EXTRACT RESPONSE
+        # ====================================================
+
+        if hasattr(response, "content"):
+
+            answer = response.content
+
+        else:
+
+            answer = str(response)
+
+        if answer is None:
+
+            answer = ""
+
+        answer = str(answer).strip()
 
         # ====================================================
         # EMPTY ANSWER PROTECTION
@@ -964,7 +1000,9 @@ def generate_answer(question):
         # SOURCES
         # ====================================================
 
-        sources = extract_sources(documents)
+        sources = extract_sources(
+            documents
+        )
 
         # ====================================================
         # CACHE
@@ -992,7 +1030,7 @@ def generate_answer(question):
 
             documents = retrieve_documents(
                 question,
-                k=2
+                k=3
             )
 
             sources = extract_sources(
@@ -1003,8 +1041,69 @@ def generate_answer(question):
 
             pass
 
+        error_text = str(e)
+
+        # ----------------------------------------------------
+        # GROQ AUTHENTICATION ERROR
+        # ----------------------------------------------------
+
+        if (
+            "401" in error_text
+            or "Unauthorized" in error_text
+            or "invalid_api_key" in error_text
+            or "Invalid API Key" in error_text
+        ):
+
+            return (
+                "❌ Groq API authentication failed.\n\n"
+                "Please check your `GROQ_API_KEY` "
+                "in Streamlit Cloud → Settings → Secrets.",
+                sources
+            )
+
+        # ----------------------------------------------------
+        # GROQ RATE LIMIT
+        # ----------------------------------------------------
+
+        if (
+            "429" in error_text
+            or "rate_limit" in error_text
+            or "Rate limit" in error_text
+        ):
+
+            return (
+                "⚠️ Groq API rate limit or quota reached.\n\n"
+                "Please wait and try again, or check your "
+                "Groq API usage and limits.",
+                sources
+            )
+
+        # ----------------------------------------------------
+        # MODEL ERROR
+        # ----------------------------------------------------
+
+        if (
+            "model" in error_text.lower()
+            and (
+                "not found" in error_text.lower()
+                or "decommissioned" in error_text.lower()
+                or "deprecated" in error_text.lower()
+            )
+        ):
+
+            return (
+                "❌ Groq model is unavailable.\n\n"
+                f"Current model: `{LLM_MODEL}`\n\n"
+                "Please check the available Groq models.",
+                sources
+            )
+
+        # ----------------------------------------------------
+        # GENERIC ERROR
+        # ----------------------------------------------------
+
         return (
-            f"Sorry, an error occurred:\n\n{e}",
+            f"Sorry, an error occurred:\n\n{error_text}",
             sources
         )
 
@@ -1106,7 +1205,9 @@ if question:
 
             with st.chat_message("assistant"):
 
-                question_key = question.lower().strip()
+                question_key = (
+                    question.lower().strip()
+                )
 
                 # ============================================
                 # CACHE HIT
@@ -1548,7 +1649,7 @@ with st.expander(
 
         ↓
 
-        **9️⃣ Cloud LLM**
+        **9️⃣ Groq Cloud LLM**
 
         ↓
 
@@ -1565,7 +1666,6 @@ st.markdown("---")
 
 st.caption(
     "🤖 RAG Chatbot | "
-    "RAG + Chroma + HuggingFace + Cloud LLM | "
+    "RAG + Chroma + HuggingFace + Groq Cloud LLM | "
     "Fast AI"
 )
-
