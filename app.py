@@ -2,7 +2,7 @@
 # ============================================================
 # RAG CHATBOT
 # FAST RAG + MODERN UI + BUTTONS + IMAGE GENERATOR
-# Streamlit + Chroma + MiniLM + Ollama + Mistral
+# Streamlit + Chroma + MiniLM + Cloud LLM
 # ============================================================
 
 import time
@@ -14,7 +14,7 @@ import streamlit as st
 
 from langchain_chroma import Chroma
 from langchain_huggingface import HuggingFaceEmbeddings
-from langchain_ollama import OllamaLLM
+from openai import OpenAI
 
 
 # ============================================================
@@ -40,7 +40,7 @@ CHROMA_DIR = BASE_DIR / "chroma_db"
 UPLOAD_DIR = DATA_DIR / "uploaded"
 
 EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
-OLLAMA_MODEL = "mistral:latest"
+LLM_MODEL = "gpt-4o-mini"
 
 
 # ============================================================
@@ -230,7 +230,7 @@ def load_vector_database():
 
 
 # ============================================================
-# LOAD LOCAL OLLAMA + MISTRAL
+# LOAD CLOUD LLM
 # ============================================================
 
 @st.cache_resource(show_spinner=False)
@@ -238,8 +238,10 @@ def load_llm():
 
     try:
 
-        return OllamaLLM(
-            model=OLLAMA_MODEL
+        api_key = st.secrets["OPENAI_API_KEY"]
+
+        return OpenAI(
+            api_key=api_key
         )
 
     except Exception:
@@ -470,10 +472,10 @@ with st.sidebar:
 
     st.markdown("### 🧠 Models")
 
-    st.caption(f"LLM: `{OLLAMA_MODEL}`")
+    st.caption(f"LLM: `{LLM_MODEL}`")
     st.caption("Embedding: MiniLM")
     st.caption("Vector DB: Chroma")
-    st.caption("Runtime: Ollama")
+    st.caption("Runtime: Cloud AI")
 
     st.markdown("---")
 
@@ -531,7 +533,7 @@ with col3:
 
     st.metric(
         "AI Model",
-        "Mistral Local"
+        "Cloud LLM"
     )
 
 with col4:
@@ -612,7 +614,7 @@ with c3:
         </div>
 
         <div class="feature-text">
-        Answers generated using Mistral through Ollama.
+        Answers generated using the cloud LLM.
         </div>
 
         </div>
@@ -909,7 +911,7 @@ def generate_answer(question):
         )
 
         # ====================================================
-        # LOAD LOCAL OLLAMA
+        # LOAD CLOUD LLM
         # ====================================================
 
         llm = load_llm()
@@ -917,9 +919,8 @@ def generate_answer(question):
         if llm is None:
 
             return (
-                "Local AI is not available. "
-                "Please make sure Ollama is running "
-                "and the Mistral model is installed.",
+                "Cloud AI is not available. "
+                "Please check the OPENAI_API_KEY in Streamlit Secrets.",
                 extract_sources(documents)
             )
 
@@ -927,9 +928,26 @@ def generate_answer(question):
         # GENERATE ANSWER
         # ====================================================
 
-        answer = llm.invoke(prompt)
+        response = llm.chat.completions.create(
+            model=LLM_MODEL,
+            messages=[
+                {
+                    "role": "system",
+                    "content": (
+                        "You are an enterprise RAG assistant. "
+                        "Answer the user's question using ONLY "
+                        "the provided context. Do not invent information."
+                    )
+                },
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ],
+            temperature=0.2
+        )
 
-        answer = str(answer).strip()
+        answer = response.choices[0].message.content.strip()
 
         # ====================================================
         # EMPTY ANSWER PROTECTION
@@ -1530,7 +1548,7 @@ with st.expander(
 
         ↓
 
-        **9️⃣ Ollama + Mistral Local LLM**
+        **9️⃣ Cloud LLM**
 
         ↓
 
@@ -1547,7 +1565,7 @@ st.markdown("---")
 
 st.caption(
     "🤖 RAG Chatbot | "
-    "RAG + Chroma + HuggingFace + Ollama + Mistral | "
-    "Fast Local AI"
+    "RAG + Chroma + HuggingFace + Cloud LLM | "
+    "Fast AI"
 )
 
