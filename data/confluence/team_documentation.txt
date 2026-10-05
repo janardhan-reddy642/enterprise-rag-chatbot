@@ -1,0 +1,16 @@
+Team Documentation
+
+Backend Team:
+Responsible for APIs, database operations, and backend services.
+
+Frontend Team:
+Responsible for the employee dashboard and user interface.
+
+DevOps Team:
+Responsible for deployment, Docker containers, and infrastructure.
+
+HR Team:
+Responsible for employee policies, leave, and benefits.
+
+IT Support Team:
+Responsible for technical support and troubleshooting.

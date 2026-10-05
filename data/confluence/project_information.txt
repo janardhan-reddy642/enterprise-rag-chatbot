@@ -1,0 +1,15 @@
+Project Information
+
+Project Name: Employee Management System
+
+The Employee Management System is used to manage employee information, leave, benefits, and internal services.
+
+Technology Stack:
+
+Python
+REST API
+PostgreSQL
+React
+Docker
+
+The backend provides REST APIs for employee-related operations.

@@ -1,0 +1,3574 @@
+Python Complete Guide • Page 1
+PYTHON — 300 PAGE COMPLETE GUIDE
+From Scratch ® Advanced ® Projects ® DSA ® Data ® RAG ® Interviews
+This study book is designed for a learner who wants a complete Python path. Use it progressively: read the explanation,
+type the example, predict the output, modify the code, and complete the practice task.
+Contents: Python fundamentals, collections, functions, OOP, files, exceptions, modules, regex, APIs, Flask/Streamlit
+concepts, databases, Pandas/NumPy, ETL, testing, async/concurrency, performance, RAG/LLM, DSA, projects, and
+interviews.
+Page 1 of 300
+Python Complete Guide • Page 2
+Python Foundations
+How Python Executes
+A Python source file normally has a .py extension. The interpreter executes Python code. Python implementations can
+compile source into bytecode before execution. For beginners, the important idea is that Python lets you write readable
+source and execute it through the Python runtime.
+Example
+print("Source code runs through the Python runtime.")
+Practice: Interview point: Python is commonly described as interpreted, although its implementation also uses compilation
+to bytecode.
+Interview tip: start with a one-sentence definition, then give an example.
+Page 2 of 300
+Python Complete Guide • Page 3
+Python Foundations
+Installing and Checking Python
+On Windows, use the Python launcher or python command. Always verify the version in the terminal before installing
+packages.
+Example
+python --version
+python -m pip --version
+Practice: Practice: create a folder called python_learning and create hello.py.
+Debugging tip: reproduce the problem with the smallest possible input.
+Page 3 of 300
+Python Complete Guide • Page 4
+Python Foundations
+Comments
+Comments document intent and are ignored by the Python interpreter. Use comments to explain why something is done, not
+every obvious line.
+Example
+# Calculate the total price
+total = 100 + 50
+print(total)
+Practice: Practice: add comments to a small marks-calculation program.
+Practice tip: change at least one line of the example and observe the result.
+Page 4 of 300
+Python Complete Guide • Page 5
+Python Foundations
+Indentation
+Python uses indentation to define blocks. Consistent indentation is essential. Four spaces are the common convention.
+Example
+if 10 > 5:
+print("10 is greater")
+Practice: Common mistake: mixing indentation levels or using a line without the required indentation.
+Design tip: prefer small functions with clear responsibilities.
+Page 5 of 300
+Python Complete Guide • Page 6
+Variables and Data Types
+Variables
+A variable is a name bound to an object. Python does not require a separate variable declaration with a type.
+Example
+name = "Janardhan"
+age = 22
+print(name, age)
+Practice: Practice: create variables for city, college, CGPA, and graduation year.
+Performance tip: measure before optimizing.
+Page 6 of 300
+Python Complete Guide • Page 7
+Variables and Data Types
+Integers and Floats
+int represents whole numbers. float represents floating-point numbers. Arithmetic can produce a float even when inputs are
+integers, depending on the operator.
+Example
+a = 10
+b = 3
+print(a + b)
+print(a / b)
+print(a // b)
+Practice: Remember: / performs true division; // performs floor division.
+Security tip: never hard-code passwords, API keys, or tokens in source code.
+Page 7 of 300
+Python Complete Guide • Page 8
+Variables and Data Types
+Booleans and None
+bool has two values: True and False. None represents the absence of a value and is commonly used as a default or missing
+result.
+Example
+is_active = True
+result = None
+print(is_active)
+print(result)
+Practice: Use `is None` when checking for None.
+Data tip: validate input before storing or processing it.
+Page 8 of 300
+Python Complete Guide • Page 9
+Variables and Data Types
+Type Conversion
+Python provides constructors such as int, float, str, and bool for many conversions. Invalid text conversions can raise
+ValueError.
+Example
+age_text = "22"
+age = int(age_text)
+print(age + 1)
+Practice: Practice: convert user input for age and marks into numbers.
+Remember: type the code yourself instead of only reading it.
+Page 9 of 300
+Python Complete Guide • Page 10
+Variables and Data Types
+Type Checking
+type() shows an object's type. isinstance() is usually preferable when checking whether an object belongs to a type or class
+hierarchy.
+Example
+value = 10
+print(type(value))
+print(isinstance(value, int))
+Practice: Interview point: Python is dynamically typed; names can be rebound to objects of different types.
+Interview tip: start with a one-sentence definition, then give an example.
+Page 10 of 300
+Python Complete Guide • Page 11
+Operators and Expressions
+Arithmetic Operators
+Python supports addition, subtraction, multiplication, division, floor division, remainder, and exponentiation.
+Example
+a = 10
+b = 3
+print(a + b)
+print(a - b)
+print(a * b)
+print(a / b)
+print(a // b)
+print(a % b)
+print(a ** b)
+Practice: Practice: calculate simple interest and compound interest.
+Debugging tip: reproduce the problem with the smallest possible input.
+Page 11 of 300
+Python Complete Guide • Page 12
+Operators and Expressions
+Comparison Operators
+Comparisons return Boolean values. Operators include ==, !=, <, <=, >, and >=.
+Example
+marks = 75
+print(marks >= 60)
+print(marks == 75)
+Practice: Do not confuse = assignment with == comparison.
+Practice tip: change at least one line of the example and observe the result.
+Page 12 of 300
+Python Complete Guide • Page 13
+Operators and Expressions
+Logical Operators
+and requires both conditions to be true, or requires at least one condition to be true, and not reverses a Boolean result.
+Example
+age = 22
+has_id = True
+print(age >= 18 and has_id)
+Practice: Practice: create an eligibility condition using age and score.
+Design tip: prefer small functions with clear responsibilities.
+Page 13 of 300
+Python Complete Guide • Page 14
+Operators and Expressions
+Membership Operators
+in and not in test membership in sequences and containers.
+Example
+name = "Python"
+print("Py" in name)
+print("Java" not in name)
+Practice: Membership is commonly used with strings, lists, sets, tuples, and dictionary keys.
+Performance tip: measure before optimizing.
+Page 14 of 300
+Python Complete Guide • Page 15
+Operators and Expressions
+Identity Operators
+is and is not test object identity, not general value equality. Use == for value comparison.
+Example
+a = None
+print(a is None)
+Practice: Interview point: `is` is appropriate for singleton checks such as None.
+Security tip: never hard-code passwords, API keys, or tokens in source code.
+Page 15 of 300
+Python Complete Guide • Page 16
+Strings
+String Creation
+Strings are sequences of Unicode characters. They can be written with single, double, or triple quotes.
+Example
+name = "Python"
+message = 'Hello'
+print(name, message)
+Practice: Practice: create a multiline string using triple quotes.
+Data tip: validate input before storing or processing it.
+Page 16 of 300
+Python Complete Guide • Page 17
+Strings
+Indexing
+String indexing starts at zero. Negative indexes count from the end.
+Example
+text = "Python"
+print(text[0])
+print(text[-1])
+Practice: Practice: print first, last, and middle characters.
+Remember: type the code yourself instead of only reading it.
+Page 17 of 300
+Python Complete Guide • Page 18
+Strings
+Slicing
+Slicing extracts a range using start:stop:step. The stop position is excluded.
+Example
+text = "Python"
+print(text[0:3])
+print(text[::-1])
+Practice: Practice: reverse a string and extract alternate characters.
+Interview tip: start with a one-sentence definition, then give an example.
+Page 18 of 300
+Python Complete Guide • Page 19
+Strings
+String Methods
+Useful methods include upper, lower, strip, split, join, replace, startswith, endswith, find, and count.
+Example
+text = " python "
+print(text.strip().upper())
+print("a,b,c".split(","))
+Practice: Practice: clean a user-entered name and normalize capitalization.
+Debugging tip: reproduce the problem with the smallest possible input.
+Page 19 of 300
+Python Complete Guide • Page 20
+Strings
+F-Strings
+F-strings provide readable formatting by placing expressions inside braces.
+Example
+name = "Ravi"
+age = 22
+print(f"{name} is {age} years old.")
+Practice: Practice: format a student's name, marks, and grade in one sentence.
+Practice tip: change at least one line of the example and observe the result.
+Page 20 of 300
+Python Complete Guide • Page 21
+Lists, Tuples, Sets, Dictionaries
+Lists
+Lists are ordered and mutable. They can contain values of different types, although consistent types are often easier to work
+with.
+Example
+numbers = [10, 20, 30]
+numbers.append(40)
+print(numbers)
+Practice: Practice: implement add, update, and delete operations on a list.
+Design tip: prefer small functions with clear responsibilities.
+Page 21 of 300
+Python Complete Guide • Page 22
+Lists, Tuples, Sets, Dictionaries
+List Methods
+Important list methods include append, extend, insert, remove, pop, clear, sort, and reverse.
+Example
+items = [3, 1, 2]
+items.sort()
+print(items)
+items.pop()
+print(items)
+Practice: Know the difference between remove(value) and pop(index).
+Performance tip: measure before optimizing.
+Page 22 of 300
+Python Complete Guide • Page 23
+Lists, Tuples, Sets, Dictionaries
+Tuples
+Tuples are ordered and immutable. They are useful for fixed collections and can be unpacked.
+Example
+point = (10, 20)
+x, y = point
+print(x, y)
+Practice: Practice: return multiple values from a function using a tuple.
+Security tip: never hard-code passwords, API keys, or tokens in source code.
+Page 23 of 300
+Python Complete Guide • Page 24
+Lists, Tuples, Sets, Dictionaries
+Sets
+Sets contain unique hashable elements and support union, intersection, difference, and symmetric difference.
+Example
+a = {1, 2, 3}
+b = {3, 4, 5}
+print(a & b)
+print(a | b)
+Practice: Practice: remove duplicates from a list using a set.
+Data tip: validate input before storing or processing it.
+Page 24 of 300
+Python Complete Guide • Page 25
+Lists, Tuples, Sets, Dictionaries
+Dictionaries
+Dictionaries store key-value pairs and are optimized for key-based lookup.
+Example
+student = {"name": "Ravi", "marks": 85}
+print(student["name"])
+student["marks"] = 90
+Practice: Practice: build a small employee record with name, ID, department, and salary.
+Remember: type the code yourself instead of only reading it.
+Page 25 of 300
+Python Complete Guide • Page 26
+Conditions and Loops
+if/elif/else
+Conditional statements choose different execution paths based on Boolean expressions.
+Example
+marks = 82
+if marks >= 90:
+grade = "A"
+elif marks >= 60:
+grade = "B"
+else:
+grade = "C"
+print(grade)
+Practice: Practice: write an electricity-bill slab calculator.
+Interview tip: start with a one-sentence definition, then give an example.
+Page 26 of 300
+Python Complete Guide • Page 27
+Conditions and Loops
+for Loop
+A for loop iterates over an iterable such as a list, string, tuple, set, dictionary, or range.
+Example
+for i in range(1, 6):
+print(i)
+Practice: Practice: print multiplication tables.
+Debugging tip: reproduce the problem with the smallest possible input.
+Page 27 of 300
+Python Complete Guide • Page 28
+Conditions and Loops
+while Loop
+A while loop repeats while its condition is true. Make sure the loop can eventually terminate.
+Example
+count = 1
+while count <= 5:
+print(count)
+count += 1
+Practice: Practice: build a simple number-guessing loop.
+Practice tip: change at least one line of the example and observe the result.
+Page 28 of 300
+Python Complete Guide • Page 29
+Conditions and Loops
+break and continue
+break exits a loop. continue skips the remaining body for the current iteration.
+Example
+for n in range(1, 10):
+if n == 5:
+break
+print(n)
+Practice: Practice: skip odd numbers using continue.
+Design tip: prefer small functions with clear responsibilities.
+Page 29 of 300
+Python Complete Guide • Page 30
+Conditions and Loops
+Nested Loops
+A loop can contain another loop. Nested loops are useful for matrices and pairwise combinations, but can increase runtime.
+Example
+for row in range(3):
+for col in range(3):
+print(row, col)
+Practice: Interview point: always consider time complexity for nested loops.
+Performance tip: measure before optimizing.
+Page 30 of 300
+Python Complete Guide • Page 31
+Functions
+Defining Functions
+Functions package reusable logic. Good functions have clear names, focused responsibilities, and predictable inputs and
+outputs.
+Example
+def add(a, b):
+return a + b
+print(add(2, 3))
+Practice: Practice: create functions for maximum, minimum, average, and palindrome checking.
+Security tip: never hard-code passwords, API keys, or tokens in source code.
+Page 31 of 300
+Python Complete Guide • Page 32
+Functions
+Parameters and Arguments
+Parameters appear in a function definition; arguments are values passed when calling the function. Python supports
+positional and keyword arguments.
+Example
+def greet(name, city):
+print(name, city)
+greet("Ravi", "Hyderabad")
+Practice: Practice: call a function using both positional and keyword arguments.
+Data tip: validate input before storing or processing it.
+Page 32 of 300
+Python Complete Guide • Page 33
+Functions
+Default Arguments
+Default values are used when callers omit an argument. Avoid mutable default arguments such as [] unless you intentionally
+understand the behavior.
+Example
+def greet(name="User"):
+return f"Hello {name}"
+print(greet())
+Practice: Interview point: default arguments are evaluated when the function is defined.
+Remember: type the code yourself instead of only reading it.
+Page 33 of 300
+Python Complete Guide • Page 34
+Functions
+*args
+Use *args to accept a variable number of positional arguments.
+Example
+def total(*numbers):
+return sum(numbers)
+print(total(1, 2, 3, 4))
+Practice: Practice: write a function that accepts any number of marks.
+Interview tip: start with a one-sentence definition, then give an example.
+Page 34 of 300
+Python Complete Guide • Page 35
+Functions
+**kwargs
+Use **kwargs to accept a variable number of keyword arguments.
+Example
+def show(**data):
+for key, value in data.items():
+print(key, value)
+show(name="Ravi", age=22)
+Practice: Practice: create a flexible employee-profile function.
+Debugging tip: reproduce the problem with the smallest possible input.
+Page 35 of 300
+Python Complete Guide • Page 36
+Comprehensions and Functional Python
+List Comprehensions
+List comprehensions create lists concisely and can include a filtering condition.
+Example
+squares = [x*x for x in range(1, 6)]
+evens = [x for x in range(10) if x % 2 == 0]
+print(squares)
+print(evens)
+Practice: Practice: create a list of cubes for numbers divisible by three.
+Practice tip: change at least one line of the example and observe the result.
+Page 36 of 300
+Python Complete Guide • Page 37
+Comprehensions and Functional Python
+Dictionary Comprehensions
+Dictionary comprehensions build dictionaries from iterable expressions.
+Example
+squares = {x: x*x for x in range(1, 5)}
+print(squares)
+Practice: Practice: create a dictionary mapping employee IDs to names.
+Design tip: prefer small functions with clear responsibilities.
+Page 37 of 300
+Python Complete Guide • Page 38
+Comprehensions and Functional Python
+Set Comprehensions
+Set comprehensions produce unique values.
+Example
+values = {x % 3 for x in range(10)}
+print(values)
+Practice: Practice: extract unique word lengths from a list.
+Performance tip: measure before optimizing.
+Page 38 of 300
+Python Complete Guide • Page 39
+Comprehensions and Functional Python
+lambda
+A lambda expression creates a small anonymous function. Use it when it improves clarity.
+Example
+add = lambda a, b: a + b
+print(add(2, 4))
+Practice: Practice: use lambda to sort a list of tuples by the second element.
+Security tip: never hard-code passwords, API keys, or tokens in source code.
+Page 39 of 300
+Python Complete Guide • Page 40
+Comprehensions and Functional Python
+map/filter/sorted
+map transforms items, filter selects items, and sorted returns a new sorted list.
+Example
+numbers = [1, 2, 3, 4]
+print(list(map(lambda x: x*x, numbers)))
+print(list(filter(lambda x: x % 2 == 0, numbers)))
+Practice: Practice: compare a comprehension solution with map/filter.
+Data tip: validate input before storing or processing it.
+Page 40 of 300
+Python Complete Guide • Page 41
+File Handling and Data Formats
+Reading Files
+Use with open(...) so the file is closed automatically. Specify encoding for predictable text handling.
+Example
+with open("data.txt", "r", encoding="utf-8") as file:
+text = file.read()
+print(text)
+Practice: Practice: read a file and count its lines.
+Remember: type the code yourself instead of only reading it.
+Page 41 of 300
+Python Complete Guide • Page 42
+File Handling and Data Formats
+Writing and Appending
+w replaces existing content; a appends to existing content. Be careful with w because it can overwrite data.
+Example
+with open("notes.txt", "w", encoding="utf-8") as f:
+f.write("Python\n")
+with open("notes.txt", "a", encoding="utf-8") as f:
+f.write("SQL\n")
+Practice: Practice: create a simple log file.
+Interview tip: start with a one-sentence definition, then give an example.
+Page 42 of 300
+Python Complete Guide • Page 43
+File Handling and Data Formats
+CSV
+CSV is common for tabular data. The csv module provides reader and writer helpers.
+Example
+import csv
+with open("students.csv", newline="", encoding="utf-8") as f:
+for row in csv.reader(f):
+print(row)
+Practice: Practice: create and read a CSV containing employee records.
+Debugging tip: reproduce the problem with the smallest possible input.
+Page 43 of 300
+Python Complete Guide • Page 44
+File Handling and Data Formats
+JSON
+JSON is common in APIs and configuration. json.dumps converts a Python object to a JSON string; json.loads parses a
+string.
+Example
+import json
+data = {"name": "Ravi", "age": 22}
+text = json.dumps(data)
+print(text)
+Practice: Practice: save and load a list of employee dictionaries.
+Practice tip: change at least one line of the example and observe the result.
+Page 44 of 300
+Python Complete Guide • Page 45
+File Handling and Data Formats
+pathlib
+pathlib provides an object-oriented interface for filesystem paths.
+Example
+from pathlib import Path
+path = Path("data")
+print(path.exists())
+for file in path.glob("*.txt"):
+print(file)
+Practice: Practice: find all TXT files in a project directory.
+Design tip: prefer small functions with clear responsibilities.
+Page 45 of 300
+Python Complete Guide • Page 46
+Exceptions and Robust Programs
+try/except
+Exception handling lets a program respond to expected runtime problems.
+Example
+try:
+value = int(input("Number: "))
+except ValueError:
+print("Invalid number")
+Practice: Practice: safely divide two user-entered numbers.
+Performance tip: measure before optimizing.
+Page 46 of 300
+Python Complete Guide • Page 47
+Exceptions and Robust Programs
+Multiple Exceptions
+Catch specific exceptions when different errors need different responses.
+Example
+try:
+value = int(input("Number: "))
+print(100 / value)
+except ValueError:
+print("Enter an integer")
+except ZeroDivisionError:
+print("Cannot divide by zero")
+Practice: Do not use broad exception handling as a substitute for understanding errors.
+Security tip: never hard-code passwords, API keys, or tokens in source code.
+Page 47 of 300
+Python Complete Guide • Page 48
+Exceptions and Robust Programs
+else and finally
+else runs when no exception occurs. finally runs whether an exception occurs or not.
+Example
+try:
+x = int("10")
+except ValueError:
+print("bad")
+else:
+print("success", x)
+finally:
+print("finished")
+Practice: Practice: use finally to close or clean a resource.
+Data tip: validate input before storing or processing it.
+Page 48 of 300
+Python Complete Guide • Page 49
+Exceptions and Robust Programs
+raise
+raise lets you deliberately signal an error when an input violates a rule.
+Example
+age = -1
+if age < 0:
+raise ValueError("Age cannot be negative")
+Practice: Practice: validate salary and marks.
+Remember: type the code yourself instead of only reading it.
+Page 49 of 300
+Python Complete Guide • Page 50
+Exceptions and Robust Programs
+Custom Exceptions
+Custom exception classes can represent application-specific errors.
+Example
+class InvalidMarksError(Exception):
+pass
+marks = 120
+if marks > 100:
+raise InvalidMarksError("Marks must be 0-100")
+Practice: Practice: create an exception for an invalid employee ID.
+Interview tip: start with a one-sentence definition, then give an example.
+Page 50 of 300
+Python Complete Guide • Page 51
+Object-Oriented Programming
+Classes and Objects
+A class defines a structure and behavior; an object is an instance of that class.
+Example
+class Employee:
+def __init__(self, name, salary):
+self.name = name
+self.salary = salary
+emp = Employee("Ravi", 40000)
+print(emp.name)
+Practice: Practice: create Student, BankAccount, and Product classes.
+Debugging tip: reproduce the problem with the smallest possible input.
+Page 51 of 300
+Python Complete Guide • Page 52
+Object-Oriented Programming
+__init__ and self
+__init__ initializes a new instance. self refers to the current instance.
+Example
+class Student:
+def __init__(self, name):
+self.name = name
+s = Student("Priya")
+print(s.name)
+Practice: Interview point: self is a conventionally named first parameter for instance methods.
+Practice tip: change at least one line of the example and observe the result.
+Page 52 of 300
+Python Complete Guide • Page 53
+Object-Oriented Programming
+Instance and Class Attributes
+Instance attributes belong to each object. Class attributes are shared at the class level unless shadowed.
+Example
+class Employee:
+company = "ABC"
+def __init__(self, name):
+self.name = name
+print(Employee.company)
+Practice: Practice: add a shared company name and individual employee names.
+Design tip: prefer small functions with clear responsibilities.
+Page 53 of 300
+Python Complete Guide • Page 54
+Object-Oriented Programming
+Inheritance
+Inheritance allows a subclass to reuse and extend a base class.
+Example
+class Animal:
+def speak(self):
+print("sound")
+class Dog(Animal):
+pass
+Dog().speak()
+Practice: Practice: create Vehicle and Car classes.
+Performance tip: measure before optimizing.
+Page 54 of 300
+Python Complete Guide • Page 55
+Object-Oriented Programming
+Polymorphism
+Different classes can implement the same method name and provide different behavior.
+Example
+class Dog:
+def sound(self): print("Bark")
+class Cat:
+def sound(self): print("Meow")
+for animal in [Dog(), Cat()]:
+animal.sound()
+Practice: Practice: create payment classes with a pay() method.
+Security tip: never hard-code passwords, API keys, or tokens in source code.
+Page 55 of 300
+Python Complete Guide • Page 56
+Advanced OOP and Python Internals
+Encapsulation
+Python uses naming conventions such as _name and name-mangling for __name. Encapsulation means keeping
+implementation details controlled behind a useful interface.
+Example
+class Account:
+def __init__(self, balance):
+self._balance = balance
+def deposit(self, amount):
+if amount > 0:
+self._balance += amount
+Practice: Practice: add withdraw logic with validation.
+Data tip: validate input before storing or processing it.
+Page 56 of 300
+Python Complete Guide • Page 57
+Advanced OOP and Python Internals
+Properties
+The property decorator can expose method-based access with attribute-like syntax.
+Example
+class Employee:
+def __init__(self, salary):
+self._salary = salary
+@property
+def salary(self):
+return self._salary
+Practice: Practice: add a setter that rejects negative salary.
+Remember: type the code yourself instead of only reading it.
+Page 57 of 300
+Python Complete Guide • Page 58
+Advanced OOP and Python Internals
+Magic Methods
+Special methods such as __str__, __len__, __eq__, and __iter__ allow objects to integrate with Python syntax.
+Example
+class Person:
+def __init__(self, name): self.name = name
+def __str__(self): return self.name
+print(Person("Ravi"))
+Practice: Practice: implement __eq__ for a simple Student class.
+Interview tip: start with a one-sentence definition, then give an example.
+Page 58 of 300
+Python Complete Guide • Page 59
+Advanced OOP and Python Internals
+Dataclasses
+dataclasses reduce boilerplate for classes that mainly store data.
+Example
+from dataclasses import dataclass
+@dataclass
+class Employee:
+name: str
+age: int
+Practice: Practice: create dataclasses for Product and Address.
+Debugging tip: reproduce the problem with the smallest possible input.
+Page 59 of 300
+Python Complete Guide • Page 60
+Advanced OOP and Python Internals
+Abstract Base Classes
+The abc module can define interfaces that subclasses are expected to implement.
+Example
+from abc import ABC, abstractmethod
+class Shape(ABC):
+@abstractmethod
+def area(self):
+pass
+Practice: Practice: implement Circle and Rectangle.
+Practice tip: change at least one line of the example and observe the result.
+Page 60 of 300
+Python Complete Guide • Page 61
+Iterators, Generators, Decorators, Context Managers
+Iterators
+An iterator implements the iteration protocol and yields one item at a time.
+Example
+items = iter([10, 20, 30])
+print(next(items))
+print(next(items))
+Practice: Practice: create a simple custom iterator.
+Design tip: prefer small functions with clear responsibilities.
+Page 61 of 300
+Python Complete Guide • Page 62
+Iterators, Generators, Decorators, Context Managers
+Generators
+Generators use yield and pause execution between values. They are useful for large streams of data.
+Example
+def count_up_to(n):
+i = 1
+while i <= n:
+yield i
+i += 1
+print(list(count_up_to(5)))
+Practice: Practice: create a generator that reads a large file line by line.
+Performance tip: measure before optimizing.
+Page 62 of 300
+Python Complete Guide • Page 63
+Iterators, Generators, Decorators, Context Managers
+Decorators
+Decorators wrap functions and can add logging, authentication, timing, caching, or validation.
+Example
+def log(func):
+def wrapper(*args, **kwargs):
+print("Calling", func.__name__)
+return func(*args, **kwargs)
+return wrapper
+@log
+def add(a, b): return a + b
+Practice: Practice: build a timing decorator using time.perf_counter.
+Security tip: never hard-code passwords, API keys, or tokens in source code.
+Page 63 of 300
+Python Complete Guide • Page 64
+Iterators, Generators, Decorators, Context Managers
+Context Managers
+Context managers manage setup and cleanup. The with statement is the common syntax.
+Example
+with open("notes.txt", "r", encoding="utf-8") as f:
+data = f.read()
+Practice: Practice: explain why with is safer than manually opening and closing files.
+Data tip: validate input before storing or processing it.
+Page 64 of 300
+Python Complete Guide • Page 65
+Iterators, Generators, Decorators, Context Managers
+functools
+functools contains reusable higher-order helpers such as wraps, partial, lru_cache, and reduce.
+Example
+from functools import lru_cache
+@lru_cache(maxsize=None)
+def fib(n):
+if n < 2: return n
+return fib(n-1) + fib(n-2)
+Practice: Practice: compare cached and uncached recursion.
+Remember: type the code yourself instead of only reading it.
+Page 65 of 300
+Python Complete Guide • Page 66
+Modules, Packages, Environments
+Imports
+Imports let one module reuse definitions from another.
+Example
+import math
+print(math.sqrt(49))
+from datetime import date
+print(date.today())
+Practice: Practice: create your own utility.py and import a function from it.
+Interview tip: start with a one-sentence definition, then give an example.
+Page 66 of 300
+Python Complete Guide • Page 67
+Modules, Packages, Environments
+Packages
+A package organizes related modules. Modern Python supports namespace packages, while __init__.py remains useful for
+package initialization and compatibility patterns.
+Example
+# project example
+myapp/
+__init__.py
+utils.py
+main.py
+Practice: Practice: organize a small calculator project into modules.
+Debugging tip: reproduce the problem with the smallest possible input.
+Page 67 of 300
+Python Complete Guide • Page 68
+Modules, Packages, Environments
+venv
+Virtual environments isolate dependencies between projects.
+Example
+python -m venv venv
+# PowerShell
+.\venv\Scripts\Activate.ps1
+Practice: Practice: create a virtual environment for a new project.
+Practice tip: change at least one line of the example and observe the result.
+Page 68 of 300
+Python Complete Guide • Page 69
+Modules, Packages, Environments
+pip and requirements
+pip installs packages. requirements.txt records dependencies so another environment can reproduce the setup.
+Example
+python -m pip install requests
+python -m pip freeze > requirements.txt
+python -m pip install -r requirements.txt
+Practice: Practice: create requirements.txt for a small API project.
+Design tip: prefer small functions with clear responsibilities.
+Page 69 of 300
+Python Complete Guide • Page 70
+Modules, Packages, Environments
+Environment Variables
+Environment variables are useful for configuration and secrets. Avoid committing secrets into source control.
+Example
+import os
+api_key = os.getenv("API_KEY")
+print(bool(api_key))
+Practice: Practice: use a .env strategy appropriate to your project's tooling, while keeping secrets out of Git.
+Performance tip: measure before optimizing.
+Page 70 of 300
+Python Complete Guide • Page 71
+Regular Expressions and Text Processing
+Regex Basics
+Regular expressions describe text patterns. Python's re module provides matching and substitution functions.
+Example
+import re
+text = "Order 123"
+print(re.search(r"\d+", text).group())
+Practice: Practice: find all numbers in a sentence.
+Security tip: never hard-code passwords, API keys, or tokens in source code.
+Page 71 of 300
+Python Complete Guide • Page 72
+Regular Expressions and Text Processing
+findall and groups
+findall returns all non-overlapping matches. Parentheses create groups.
+Example
+import re
+text = "A12 B34 C56"
+print(re.findall(r"([A-Z])(\d+)", text))
+Practice: Practice: extract product codes.
+Data tip: validate input before storing or processing it.
+Page 72 of 300
+Python Complete Guide • Page 73
+Regular Expressions and Text Processing
+Substitution
+re.sub replaces matching text according to a pattern.
+Example
+import re
+text = "Phone: 123-456"
+print(re.sub(r"\d", "*", text))
+Practice: Practice: mask sensitive digits.
+Remember: type the code yourself instead of only reading it.
+Page 73 of 300
+Python Complete Guide • Page 74
+Regular Expressions and Text Processing
+Validation
+Regex can help validate structured text, but complex validation may be clearer with dedicated parsing or explicit logic.
+Example
+import re
+email = "user@example.com"
+print(bool(re.fullmatch(r"[\w.-]+@[\w.-]+\.\w+", email)))
+Practice: Practice: validate a simple employee ID format.
+Interview tip: start with a one-sentence definition, then give an example.
+Page 74 of 300
+Python Complete Guide • Page 75
+Regular Expressions and Text Processing
+Text Cleaning
+Text cleaning often combines strip, case normalization, whitespace handling, replacement, splitting, and regular
+expressions.
+Example
+text = " Python SQL "
+words = text.split()
+print(" ".join(words).lower())
+Practice: Practice: clean a paragraph before storing it for search.
+Debugging tip: reproduce the problem with the smallest possible input.
+Page 75 of 300
+Python Complete Guide • Page 76
+APIs and Web Development
+HTTP Basics
+HTTP is a protocol used by clients and servers. Common methods include GET, POST, PUT, PATCH, and DELETE.
+Example
+GET /employees
+POST /employees
+PUT /employees/1
+DELETE /employees/1
+Practice: Practice: identify which HTTP method you would use for five sample operations.
+Practice tip: change at least one line of the example and observe the result.
+Page 76 of 300
+Python Complete Guide • Page 77
+APIs and Web Development
+Requests
+The requests library makes HTTP calls convenient. Production code should use timeouts and inspect status codes.
+Example
+import requests
+r = requests.get("https://example.com", timeout=10)
+print(r.status_code)
+Practice: Practice: call a public JSON API and print selected fields.
+Design tip: prefer small functions with clear responsibilities.
+Page 77 of 300
+Python Complete Guide • Page 78
+APIs and Web Development
+JSON API
+Many APIs exchange JSON. A response can be parsed into Python dictionaries and lists.
+Example
+data = r.json()
+print(type(data))
+Practice: Practice: safely handle a response that is not valid JSON.
+Performance tip: measure before optimizing.
+Page 78 of 300
+Python Complete Guide • Page 79
+APIs and Web Development
+Flask Concept
+Flask is a lightweight Python web framework. Routes map HTTP requests to Python functions.
+Example
+from flask import Flask
+app = Flask(__name__)
+@app.get("/")
+def home():
+return {"message": "Hello"}
+Practice: Practice: create /health and /employees endpoints.
+Security tip: never hard-code passwords, API keys, or tokens in source code.
+Page 79 of 300
+Python Complete Guide • Page 80
+APIs and Web Development
+Streamlit Concept
+Streamlit lets Python developers build data and AI interfaces quickly. It is useful for prototypes and internal tools.
+Example
+import streamlit as st
+st.title("Python App")
+name = st.text_input("Name")
+if name:
+st.write("Hello", name)
+Practice: Practice: create a simple form with three inputs.
+Data tip: validate input before storing or processing it.
+Page 80 of 300
+Python Complete Guide • Page 81
+Databases and SQL
+SQLite
+sqlite3 is included with Python and is useful for learning relational database operations.
+Example
+import sqlite3
+conn = sqlite3.connect("app.db")
+cur = conn.cursor()
+cur.execute("CREATE TABLE IF NOT EXISTS student(id INTEGER, name TEXT)")
+conn.commit()
+conn.close()
+Practice: Practice: create a student table and insert records.
+Remember: type the code yourself instead of only reading it.
+Page 81 of 300
+Python Complete Guide • Page 82
+Databases and SQL
+Parameterized Queries
+Use parameters instead of constructing SQL with string concatenation when values come from users.
+Example
+cur.execute("INSERT INTO student VALUES (?, ?)", (1, "Ravi"))
+Practice: Interview point: parameterization helps prevent SQL injection.
+Interview tip: start with a one-sentence definition, then give an example.
+Page 82 of 300
+Python Complete Guide • Page 83
+Databases and SQL
+CRUD
+CRUD means Create, Read, Update, Delete. Python database programs often implement these operations through
+functions or repository classes.
+Example
+INSERT INTO student VALUES (1, "Ravi");
+SELECT * FROM student;
+UPDATE student SET name="Priya" WHERE id=1;
+DELETE FROM student WHERE id=1;
+Practice: Practice: implement CRUD for employees.
+Debugging tip: reproduce the problem with the smallest possible input.
+Page 83 of 300
+Python Complete Guide • Page 84
+Databases and SQL
+Transactions
+A transaction groups operations so they can be committed or rolled back consistently.
+Example
+conn.execute("BEGIN")
+# perform related changes
+conn.commit()
+Practice: Practice: explain why transferring money should update two accounts atomically.
+Practice tip: change at least one line of the example and observe the result.
+Page 84 of 300
+Python Complete Guide • Page 85
+Databases and SQL
+Connection Management
+Connections and cursors are resources. Use reliable cleanup and consider connection pooling in larger applications.
+Example
+try:
+# database operations
+pass
+finally:
+conn.close()
+Practice: Practice: compare direct database access with a service/repository layer.
+Design tip: prefer small functions with clear responsibilities.
+Page 85 of 300
+Python Complete Guide • Page 86
+Data Analysis with NumPy and Pandas
+NumPy Arrays
+NumPy provides efficient multidimensional arrays and vectorized numerical operations.
+Example
+import numpy as np
+arr = np.array([1, 2, 3, 4])
+print(arr * 2)
+Practice: Practice: calculate mean, sum, minimum, and maximum.
+Performance tip: measure before optimizing.
+Page 86 of 300
+Python Complete Guide • Page 87
+Data Analysis with NumPy and Pandas
+Pandas DataFrame
+A DataFrame is a labeled two-dimensional table. It is central to many Python data-analysis workflows.
+Example
+import pandas as pd
+df = pd.DataFrame({"name":["Ravi","Priya"],"marks":[80,90]})
+print(df)
+Practice: Practice: create a DataFrame from a list of dictionaries.
+Security tip: never hard-code passwords, API keys, or tokens in source code.
+Page 87 of 300
+Python Complete Guide • Page 88
+Data Analysis with NumPy and Pandas
+Filtering and Sorting
+Boolean filtering selects rows. sort_values orders rows by one or more columns.
+Example
+print(df[df["marks"] >= 85])
+print(df.sort_values("marks", ascending=False))
+Practice: Practice: filter employees by salary and department.
+Data tip: validate input before storing or processing it.
+Page 88 of 300
+Python Complete Guide • Page 89
+Data Analysis with NumPy and Pandas
+groupby
+groupby supports aggregation by categories.
+Example
+data = pd.DataFrame({"dept":["IT","HR","IT"],"salary":[50,40,60]})
+print(data.groupby("dept")["salary"].mean())
+Practice: Practice: calculate average salary by department.
+Remember: type the code yourself instead of only reading it.
+Page 89 of 300
+Python Complete Guide • Page 90
+Data Analysis with NumPy and Pandas
+Missing Data
+Real datasets can contain missing values. Pandas provides isna, fillna, dropna, and related tools.
+Example
+df["marks"] = df["marks"].fillna(0)
+print(df)
+Practice: Practice: decide when to fill versus drop missing values.
+Interview tip: start with a one-sentence definition, then give an example.
+Page 90 of 300
+Python Complete Guide • Page 91
+Data Engineering and ETL
+ETL
+ETL stands for Extract, Transform, Load. Extract gets data from sources, transform cleans or reshapes it, and load writes it
+to a target.
+Example
+data = extract()
+clean = transform(data)
+load(clean)
+Practice: Practice: describe an ETL pipeline from CSV to PostgreSQL.
+Debugging tip: reproduce the problem with the smallest possible input.
+Page 91 of 300
+Python Complete Guide • Page 92
+Data Engineering and ETL
+Validation
+Data validation checks types, ranges, required fields, duplicates, and business rules before loading.
+Example
+def valid_mark(mark):
+return isinstance(mark, (int, float)) and 0 <= mark <= 100
+Practice: Practice: define validation rules for employee records.
+Practice tip: change at least one line of the example and observe the result.
+Page 92 of 300
+Python Complete Guide • Page 93
+Data Engineering and ETL
+Batch Processing
+Batch jobs process a set of records at scheduled or triggered intervals. They should be restartable and observable.
+Example
+for file in input_files:
+records = read(file)
+process(records)
+Practice: Practice: design a daily sales-file pipeline.
+Design tip: prefer small functions with clear responsibilities.
+Page 93 of 300
+Python Complete Guide • Page 94
+Data Engineering and ETL
+Idempotency
+An operation is idempotent when repeating it produces the same intended final state. Idempotency is important when jobs
+retry.
+Example
+processed_ids = set()
+# conceptually skip records already processed
+Practice: Practice: design a safe retry strategy for an API ingestion job.
+Performance tip: measure before optimizing.
+Page 94 of 300
+Python Complete Guide • Page 95
+Data Engineering and ETL
+Cloud Dataflow Concept
+Cloud data-processing systems can distribute transformations across workers. Python pipelines should separate extraction,
+transformation, validation, and loading logic.
+Example
+def transform(record):
+record["name"] = record["name"].strip()
+return record
+Practice: Practice: explain ETL in simple interview language.
+Security tip: never hard-code passwords, API keys, or tokens in source code.
+Page 95 of 300
+Python Complete Guide • Page 96
+Testing, Debugging, Logging
+Unit Tests
+Unit tests verify small units of behavior. Keep tests deterministic and focused.
+Example
+def add(a, b): return a + b
+def test_add():
+assert add(2, 3) == 5
+Practice: Practice: write tests for a palindrome function.
+Data tip: validate input before storing or processing it.
+Page 96 of 300
+Python Complete Guide • Page 97
+Testing, Debugging, Logging
+Test Edge Cases
+Good tests cover empty input, boundary values, invalid input, duplicates, and unusually large values.
+Example
+assert [] == []
+assert "" == ""
+Practice: Practice: list five edge cases for a binary-search function.
+Remember: type the code yourself instead of only reading it.
+Page 97 of 300
+Python Complete Guide • Page 98
+Testing, Debugging, Logging
+Debugging
+Debugging is the process of finding the cause of incorrect behavior. Reproduce the issue, inspect inputs, isolate the failing
+component, fix it, and retest.
+Example
+print("debug value:", value)
+Practice: Use a debugger or logging for nontrivial programs rather than adding many permanent print statements.
+Interview tip: start with a one-sentence definition, then give an example.
+Page 98 of 300
+Python Complete Guide • Page 99
+Testing, Debugging, Logging
+Logging
+Logging provides structured runtime information. Levels include DEBUG, INFO, WARNING, ERROR, and CRITICAL.
+Example
+import logging
+logging.basicConfig(level=logging.INFO)
+logging.info("Application started")
+Practice: Practice: add logging to a file-processing script.
+Debugging tip: reproduce the problem with the smallest possible input.
+Page 99 of 300
+Python Complete Guide • Page 100
+Testing, Debugging, Logging
+Code Quality
+Readable names, small functions, consistent formatting, tests, documentation, and clear error handling make code easier to
+maintain.
+Example
+def calculate_total(price, quantity):
+return price * quantity
+Practice: Practice: refactor one long function into three focused functions.
+Practice tip: change at least one line of the example and observe the result.
+Page 100 of 300
+Python Complete Guide • Page 101
+Concurrency and Async
+Threading Concept
+Threads can help with I/O-bound work because waiting can overlap. Shared state requires careful synchronization.
+Example
+import threading
+def work():
+print("working")
+thread = threading.Thread(target=work)
+thread.start()
+thread.join()
+Practice: Practice: identify an I/O-bound task that could benefit from concurrency.
+Design tip: prefer small functions with clear responsibilities.
+Page 101 of 300
+Python Complete Guide • Page 102
+Concurrency and Async
+Multiprocessing Concept
+Processes have separate memory spaces and can execute CPU-bound work in parallel across cores.
+Example
+from multiprocessing import Process
+def work():
+print("process")
+p = Process(target=work)
+p.start()
+p.join()
+Practice: Practice: explain why CPU-bound and I/O-bound tasks may need different approaches.
+Performance tip: measure before optimizing.
+Page 102 of 300
+Python Complete Guide • Page 103
+Concurrency and Async
+asyncio
+asyncio supports cooperative asynchronous programming using async and await.
+Example
+import asyncio
+async def task():
+await asyncio.sleep(1)
+return "done"
+print(asyncio.run(task()))
+Practice: Practice: model three independent network requests as asynchronous tasks.
+Security tip: never hard-code passwords, API keys, or tokens in source code.
+Page 103 of 300
+Python Complete Guide • Page 104
+Concurrency and Async
+Race Conditions
+A race condition occurs when program correctness depends on timing between concurrent operations. Locks or other
+synchronization strategies can protect shared state.
+Example
+# conceptual example
+# lock protects shared state
+Practice: Practice: explain why incrementing a shared counter may need synchronization.
+Data tip: validate input before storing or processing it.
+Page 104 of 300
+Python Complete Guide • Page 105
+Concurrency and Async
+Choosing a Strategy
+Use straightforward synchronous code unless concurrency solves a real bottleneck. Choose threads/processes/async
+according to workload and library support.
+Example
+work_type = "I/O-bound"
+print("Choose based on workload:", work_type)
+Practice: Interview point: measure before optimizing.
+Remember: type the code yourself instead of only reading it.
+Page 105 of 300
+Python Complete Guide • Page 106
+Python Performance and Memory
+Big-O Basics
+Algorithmic complexity describes how resource use grows with input size. Common classes include O(1), O(log n), O(n),
+O(n log n), and O(n²).
+Example
+for value in values:
+print(value) # O(n) loop
+Practice: Practice: estimate the complexity of five simple algorithms.
+Interview tip: start with a one-sentence definition, then give an example.
+Page 106 of 300
+Python Complete Guide • Page 107
+Python Performance and Memory
+List vs Set Lookup
+Lists generally require scanning for membership, while sets are hash-based and usually provide average constant-time
+membership.
+Example
+items = {1, 2, 3}
+print(2 in items)
+Practice: Practice: explain when converting a list to a set can improve repeated membership checks.
+Debugging tip: reproduce the problem with the smallest possible input.
+Page 107 of 300
+Python Complete Guide • Page 108
+Python Performance and Memory
+Generators for Memory
+Generators produce values lazily and can reduce peak memory usage for large sequences.
+Example
+def lines(path):
+with open(path, encoding="utf-8") as f:
+for line in f:
+yield line.rstrip()
+Practice: Practice: process a large text file without calling read() on the whole file.
+Practice tip: change at least one line of the example and observe the result.
+Page 108 of 300
+Python Complete Guide • Page 109
+Python Performance and Memory
+Profiling
+Profiling measures where a program spends time or memory. Optimize based on measurements rather than guesses.
+Example
+import time
+start = time.perf_counter()
+# code
+elapsed = time.perf_counter() - start
+print(elapsed)
+Practice: Practice: time two implementations of a simple operation.
+Design tip: prefer small functions with clear responsibilities.
+Page 109 of 300
+Python Complete Guide • Page 110
+Python Performance and Memory
+Caching
+Caching avoids repeated expensive computation when inputs repeat. functools.lru_cache is useful for pure or appropriately
+cacheable functions.
+Example
+from functools import lru_cache
+@lru_cache(None)
+def square(x): return x*x
+Practice: Practice: explain the tradeoff between speed and memory.
+Performance tip: measure before optimizing.
+Page 110 of 300
+Python Complete Guide • Page 111
+RAG, LLM and AI with Python
+RAG Overview
+Retrieval-Augmented Generation combines information retrieval with language generation. The system retrieves relevant
+document chunks and supplies them as context to an LLM.
+Example
+documents -> chunks -> embeddings -> vector DB -> retrieve -> LLM -> answer
+Practice: Interview answer: RAG helps ground answers in a selected knowledge source instead of relying only on model
+parameters.
+Security tip: never hard-code passwords, API keys, or tokens in source code.
+Page 111 of 300
+Python Complete Guide • Page 112
+RAG, LLM and AI with Python
+Document Ingestion
+Ingestion loads source files, extracts text, cleans it, splits it into chunks, creates embeddings, and stores vectors with
+metadata.
+Example
+PDF/TXT -> text -> chunks -> embeddings -> ChromaDB
+Practice: Practice: explain ingestion in six simple steps.
+Data tip: validate input before storing or processing it.
+Page 112 of 300
+Python Complete Guide • Page 113
+RAG, LLM and AI with Python
+Embeddings
+An embedding represents text as a numerical vector. Semantically related text can be close in vector space.
+Example
+query = "leave policy"
+# embedding(query) -> vector
+Practice: Practice: explain why keyword search and semantic search can behave differently.
+Remember: type the code yourself instead of only reading it.
+Page 113 of 300
+Python Complete Guide • Page 114
+RAG, LLM and AI with Python
+Vector Database
+A vector database stores embeddings and metadata and supports similarity search. ChromaDB is commonly used in local
+RAG prototypes.
+Example
+collection.add(
+documents=["leave policy"],
+ids=["doc1"]
+)
+Practice: Practice: explain what is stored in a vector database.
+Interview tip: start with a one-sentence definition, then give an example.
+Page 114 of 300
+Python Complete Guide • Page 115
+RAG, LLM and AI with Python
+Retriever and LLM
+A retriever finds relevant chunks. The LLM receives the question and retrieved context and generates the response.
+Example
+question -> retriever -> context -> prompt -> LLM -> answer
+Practice: Practice: explain why retrieval quality strongly affects RAG answer quality.
+Debugging tip: reproduce the problem with the smallest possible input.
+Page 115 of 300
+Python Complete Guide • Page 116
+Enterprise RAG Project
+Project Architecture
+An enterprise chatbot can combine HR documents, technical documentation, policies, Jira tickets, and Confluence
+knowledge. A common pipeline is ingestion, chunking, embeddings, vector storage, retrieval, prompt construction, and local
+LLM generation.
+Example
+Jira + Confluence + Documents
+|
+Ingestion
+|
+Chunking
+|
+Embeddings
+|
+ChromaDB
+|
+User Question
+|
+Retrieval
+|
+Ollama/Mistral
+Practice: Practice: explain this architecture in one minute.
+Practice tip: change at least one line of the example and observe the result.
+Page 116 of 300
+Python Complete Guide • Page 117
+Enterprise RAG Project
+Python Backend Role
+Python can orchestrate document loaders, preprocessing, retrieval, prompt construction, API routes, and application logic.
+Example
+def answer_question(question):
+context = retrieve(question)
+return generate(question, context)
+Practice: Practice: separate UI code from retrieval logic.
+Design tip: prefer small functions with clear responsibilities.
+Page 117 of 300
+Python Complete Guide • Page 118
+Enterprise RAG Project
+ChromaDB Role
+ChromaDB can store document chunks and embeddings. Metadata such as source path and document type can help trace
+answers back to source material.
+Example
+metadata = {"source": "hr/leave_policy.txt", "type": "hr"}
+Practice: Practice: explain why source metadata matters.
+Performance tip: measure before optimizing.
+Page 118 of 300
+Python Complete Guide • Page 119
+Enterprise RAG Project
+Ollama and Mistral
+Ollama provides a local model-serving workflow. Mistral is a family of language models. In a local RAG project, the model
+can generate responses from retrieved context without requiring every query to be sent to a hosted model API.
+Example
+question = "How many paid leaves?"
+context = "Employees receive 20 paid leaves."
+# LLM uses question + context
+Practice: Practice: explain the privacy and deployment considerations of local inference without making absolute security
+claims.
+Security tip: never hard-code passwords, API keys, or tokens in source code.
+Page 119 of 300
+Python Complete Guide • Page 120
+Enterprise RAG Project
+Streamlit UI
+Streamlit can provide document upload, question input, status messages, and answer display with relatively little Python
+code.
+Example
+import streamlit as st
+st.title("Enterprise RAG Chatbot")
+question = st.text_input("Ask a question")
+Practice: Practice: design a simple UI with upload, question, answer, and source sections.
+Data tip: validate input before storing or processing it.
+Page 120 of 300
+Python Complete Guide • Page 121
+DSA with Python
+Arrays and Lists
+Python lists are commonly used for array-style interview problems. Learn traversal, insertion, deletion, searching, and
+two-pointer patterns.
+Example
+nums = [1, 2, 3, 4]
+for x in nums:
+print(x)
+Practice: Practice: find the largest element without max().
+Remember: type the code yourself instead of only reading it.
+Page 121 of 300
+Python Complete Guide • Page 122
+DSA with Python
+Two Sum
+The two-sum problem asks for two values whose sum equals a target. A hash map can remember previously seen values.
+Example
+nums = [2, 7, 11, 15]
+target = 9
+seen = {}
+for i, x in enumerate(nums):
+if target-x in seen:
+print(seen[target-x], i)
+break
+seen[x] = i
+Practice: Complexity: O(n) average time and O(n) extra space.
+Interview tip: start with a one-sentence definition, then give an example.
+Page 122 of 300
+Python Complete Guide • Page 123
+DSA with Python
+Sorting
+Python's sorted() returns a new list; list.sort() sorts in place. Python's built-in sorting is stable.
+Example
+values = [5, 2, 8, 1]
+print(sorted(values))
+values.sort()
+print(values)
+Practice: Practice: sort objects by multiple fields.
+Debugging tip: reproduce the problem with the smallest possible input.
+Page 123 of 300
+Python Complete Guide • Page 124
+DSA with Python
+Binary Search
+Binary search repeatedly halves a sorted search space. It runs in O(log n) time.
+Example
+def binary_search(a, target):
+lo, hi = 0, len(a)-1
+while lo <= hi:
+mid = (lo + hi) // 2
+if a[mid] == target: return mid
+if a[mid] < target: lo = mid + 1
+else: hi = mid - 1
+return -1
+Practice: Practice: implement lower_bound-style searching.
+Practice tip: change at least one line of the example and observe the result.
+Page 124 of 300
+Python Complete Guide • Page 125
+DSA with Python
+Linked Lists
+A singly linked list contains nodes with data and a reference to the next node.
+Example
+class Node:
+def __init__(self, data):
+self.data = data
+self.next = None
+Practice: Practice: insert at beginning, end, update, delete, and traverse.
+Design tip: prefer small functions with clear responsibilities.
+Page 125 of 300
+Python Complete Guide • Page 126
+DSA with Python
+Stacks and Queues
+A stack follows LIFO. A queue follows FIFO. Python's collections.deque is efficient for both ends.
+Example
+from collections import deque
+q = deque()
+q.append(10)
+q.append(20)
+print(q.popleft())
+Practice: Practice: solve valid-parentheses using a stack.
+Performance tip: measure before optimizing.
+Page 126 of 300
+Python Complete Guide • Page 127
+DSA with Python
+Hashing
+Dictionaries and sets support fast average-case lookup and are central to many interview problems.
+Example
+freq = {}
+for ch in "banana":
+freq[ch] = freq.get(ch, 0) + 1
+print(freq)
+Practice: Practice: frequency counting, first unique character, and duplicate detection.
+Security tip: never hard-code passwords, API keys, or tokens in source code.
+Page 127 of 300
+Python Complete Guide • Page 128
+DSA with Python
+Trees
+Trees are hierarchical structures. Common traversals are preorder, inorder, postorder, and level order.
+Example
+class Node:
+def __init__(self, value):
+self.value = value
+self.left = None
+self.right = None
+Practice: Practice: implement recursive inorder traversal.
+Data tip: validate input before storing or processing it.
+Page 128 of 300
+Python Complete Guide • Page 129
+DSA with Python
+Graphs
+Graphs consist of vertices and edges. BFS and DFS are fundamental traversal methods.
+Example
+from collections import deque
+# adjacency list concept
+G = {"A":["B","C"], "B":["D"], "C":[], "D":[]}
+Practice: Practice: implement BFS and DFS.
+Remember: type the code yourself instead of only reading it.
+Page 129 of 300
+Python Complete Guide • Page 130
+DSA with Python
+Dynamic Programming
+Dynamic programming solves overlapping subproblems by storing results. Start with memoization and tabulation.
+Example
+from functools import lru_cache
+@lru_cache(None)
+def fib(n):
+if n < 2: return n
+return fib(n-1) + fib(n-2)
+Practice: Practice: solve climbing stairs and house robber.
+Interview tip: start with a one-sentence definition, then give an example.
+Page 130 of 300
+Python Complete Guide • Page 131
+Projects and Interview Preparation
+Beginner Project: Calculator
+Build a command-line calculator using functions, input validation, and exception handling.
+Example
+def add(a,b): return a+b
+def sub(a,b): return a-b
+print(add(10, 5))
+Practice: Extensions: menu, history, division-by-zero handling, and tests.
+Debugging tip: reproduce the problem with the smallest possible input.
+Page 131 of 300
+Python Complete Guide • Page 132
+Projects and Interview Preparation
+Beginner Project: Student Manager
+Store student records in a list of dictionaries or a SQLite database. Implement CRUD operations.
+Example
+students = []
+students.append({"id": 1, "name": "Ravi", "marks": 85})
+print(students)
+Practice: Extensions: search, sorting, validation, persistence.
+Practice tip: change at least one line of the example and observe the result.
+Page 132 of 300
+Python Complete Guide • Page 133
+Projects and Interview Preparation
+Intermediate Project: Weather API
+Fetch weather data from an API, parse JSON, save records, analyze them with Pandas, and display a small dashboard.
+Example
+import requests
+# response = requests.get(url, timeout=10)
+# data = response.json()
+Practice: Extensions: CSV storage, error handling, charts, and Streamlit.
+Design tip: prefer small functions with clear responsibilities.
+Page 133 of 300
+Python Complete Guide • Page 134
+Projects and Interview Preparation
+Intermediate Project: Employee Management
+Build CRUD operations with Flask or Streamlit and SQLite/PostgreSQL. Separate database code from UI code.
+Example
+def create_employee(name, department):
+return {"name": name, "department": department}
+Practice: Extensions: validation, search, pagination, logging, and tests.
+Performance tip: measure before optimizing.
+Page 134 of 300
+Python Complete Guide • Page 135
+Projects and Interview Preparation
+Advanced Project: Enterprise RAG
+Build a RAG chatbot with document ingestion, chunking, embeddings, ChromaDB, retrieval, Ollama/Mistral, and a Streamlit
+interface.
+Example
+question = "What is the leave policy?"
+# retrieve context -> generate answer
+Practice: Extensions: citations, metadata filters, source display, evaluation, access control, and ingestion from enterprise
+systems.
+Security tip: never hard-code passwords, API keys, or tokens in source code.
+Page 135 of 300
+Python Complete Guide • Page 136
+Projects and Interview Preparation
+Python Interview: Short Answers
+For interviews, define the concept in one sentence, give a small example, and mention a practical use.
+Example
+Q: List vs tuple?
+A: List is mutable; tuple is immutable.
+Practice: Practice this format for functions, OOP, exceptions, generators, decorators, APIs, SQL connectivity, and RAG.
+Data tip: validate input before storing or processing it.
+Page 136 of 300
+Python Complete Guide • Page 137
+Projects and Interview Preparation
+Python Interview: Coding Approach
+For coding questions: clarify input/output, give a simple approach, improve it if necessary, state complexity, and test edge
+cases.
+Example
+Example:
+Input: [2,7,11,15], target=9
+Output: indices [0,1]
+Practice: Practice explaining your thought process clearly without jumping directly to code.
+Remember: type the code yourself instead of only reading it.
+Page 137 of 300
+Python Complete Guide • Page 138
+Projects and Interview Preparation
+Resume Project Explanation
+A strong project explanation covers problem, solution, architecture, technologies, your contribution, challenges, and result.
+Example
+Problem -> Solution -> Architecture -> Technologies -> Challenge -> Result
+Practice: Practice a 60-second and 2-minute version of your Enterprise RAG project.
+Interview tip: start with a one-sentence definition, then give an example.
+Page 138 of 300
+Python Complete Guide • Page 139
+Projects and Interview Preparation
+Final Revision
+The most important Python foundations are data types, control flow, functions, collections, exceptions, OOP, modules, file
+handling, testing, and practical projects. Advanced learners should add iterators, generators, decorators, context managers,
+concurrency, performance, APIs, databases, and data tools.
+Example
+print("Learn -> Practice -> Explain -> Build -> Review")
+Practice: Final goal: write Python programs independently rather than memorizing isolated syntax.
+Debugging tip: reproduce the problem with the smallest possible input.
+Page 139 of 300
+Python Complete Guide • Page 140
+Python Foundations
+What is Python?
+Python is a high-level, general-purpose programming language. It emphasizes readable syntax and supports procedural,
+object-oriented, and functional programming. Python is widely used for automation, backend development, data analysis,
+data engineering, testing, scripting, and AI applications.
+Example
+print("Hello, Python!")
+Practice: Practice: change the message, print your name, and print three lines.
+Practice tip: change at least one line of the example and observe the result.
+Page 140 of 300
+Python Complete Guide • Page 141
+Python Foundations
+How Python Executes
+A Python source file normally has a .py extension. The interpreter executes Python code. Python implementations can
+compile source into bytecode before execution. For beginners, the important idea is that Python lets you write readable
+source and execute it through the Python runtime.
+Example
+print("Source code runs through the Python runtime.")
+Practice: Interview point: Python is commonly described as interpreted, although its implementation also uses compilation
+to bytecode.
+Design tip: prefer small functions with clear responsibilities.
+Page 141 of 300
+Python Complete Guide • Page 142
+Python Foundations
+Installing and Checking Python
+On Windows, use the Python launcher or python command. Always verify the version in the terminal before installing
+packages.
+Example
+python --version
+python -m pip --version
+Practice: Practice: create a folder called python_learning and create hello.py.
+Performance tip: measure before optimizing.
+Page 142 of 300
+Python Complete Guide • Page 143
+Python Foundations
+Comments
+Comments document intent and are ignored by the Python interpreter. Use comments to explain why something is done, not
+every obvious line.
+Example
+# Calculate the total price
+total = 100 + 50
+print(total)
+Practice: Practice: add comments to a small marks-calculation program.
+Security tip: never hard-code passwords, API keys, or tokens in source code.
+Page 143 of 300
+Python Complete Guide • Page 144
+Python Foundations
+Indentation
+Python uses indentation to define blocks. Consistent indentation is essential. Four spaces are the common convention.
+Example
+if 10 > 5:
+print("10 is greater")
+Practice: Common mistake: mixing indentation levels or using a line without the required indentation.
+Data tip: validate input before storing or processing it.
+Page 144 of 300
+Python Complete Guide • Page 145
+Variables and Data Types
+Variables
+A variable is a name bound to an object. Python does not require a separate variable declaration with a type.
+Example
+name = "Janardhan"
+age = 22
+print(name, age)
+Practice: Practice: create variables for city, college, CGPA, and graduation year.
+Remember: type the code yourself instead of only reading it.
+Page 145 of 300
+Python Complete Guide • Page 146
+Variables and Data Types
+Integers and Floats
+int represents whole numbers. float represents floating-point numbers. Arithmetic can produce a float even when inputs are
+integers, depending on the operator.
+Example
+a = 10
+b = 3
+print(a + b)
+print(a / b)
+print(a // b)
+Practice: Remember: / performs true division; // performs floor division.
+Interview tip: start with a one-sentence definition, then give an example.
+Page 146 of 300
+Python Complete Guide • Page 147
+Variables and Data Types
+Booleans and None
+bool has two values: True and False. None represents the absence of a value and is commonly used as a default or missing
+result.
+Example
+is_active = True
+result = None
+print(is_active)
+print(result)
+Practice: Use `is None` when checking for None.
+Debugging tip: reproduce the problem with the smallest possible input.
+Page 147 of 300
+Python Complete Guide • Page 148
+Variables and Data Types
+Type Conversion
+Python provides constructors such as int, float, str, and bool for many conversions. Invalid text conversions can raise
+ValueError.
+Example
+age_text = "22"
+age = int(age_text)
+print(age + 1)
+Practice: Practice: convert user input for age and marks into numbers.
+Practice tip: change at least one line of the example and observe the result.
+Page 148 of 300
+Python Complete Guide • Page 149
+Variables and Data Types
+Type Checking
+type() shows an object's type. isinstance() is usually preferable when checking whether an object belongs to a type or class
+hierarchy.
+Example
+value = 10
+print(type(value))
+print(isinstance(value, int))
+Practice: Interview point: Python is dynamically typed; names can be rebound to objects of different types.
+Design tip: prefer small functions with clear responsibilities.
+Page 149 of 300
+Python Complete Guide • Page 150
+Operators and Expressions
+Arithmetic Operators
+Python supports addition, subtraction, multiplication, division, floor division, remainder, and exponentiation.
+Example
+a = 10
+b = 3
+print(a + b)
+print(a - b)
+print(a * b)
+print(a / b)
+print(a // b)
+print(a % b)
+print(a ** b)
+Practice: Practice: calculate simple interest and compound interest.
+Performance tip: measure before optimizing.
+Page 150 of 300
+Python Complete Guide • Page 151
+Operators and Expressions
+Comparison Operators
+Comparisons return Boolean values. Operators include ==, !=, <, <=, >, and >=.
+Example
+marks = 75
+print(marks >= 60)
+print(marks == 75)
+Practice: Do not confuse = assignment with == comparison.
+Security tip: never hard-code passwords, API keys, or tokens in source code.
+Page 151 of 300
+Python Complete Guide • Page 152
+Operators and Expressions
+Logical Operators
+and requires both conditions to be true, or requires at least one condition to be true, and not reverses a Boolean result.
+Example
+age = 22
+has_id = True
+print(age >= 18 and has_id)
+Practice: Practice: create an eligibility condition using age and score.
+Data tip: validate input before storing or processing it.
+Page 152 of 300
+Python Complete Guide • Page 153
+Operators and Expressions
+Membership Operators
+in and not in test membership in sequences and containers.
+Example
+name = "Python"
+print("Py" in name)
+print("Java" not in name)
+Practice: Membership is commonly used with strings, lists, sets, tuples, and dictionary keys.
+Remember: type the code yourself instead of only reading it.
+Page 153 of 300
+Python Complete Guide • Page 154
+Operators and Expressions
+Identity Operators
+is and is not test object identity, not general value equality. Use == for value comparison.
+Example
+a = None
+print(a is None)
+Practice: Interview point: `is` is appropriate for singleton checks such as None.
+Interview tip: start with a one-sentence definition, then give an example.
+Page 154 of 300
+Python Complete Guide • Page 155
+Strings
+String Creation
+Strings are sequences of Unicode characters. They can be written with single, double, or triple quotes.
+Example
+name = "Python"
+message = 'Hello'
+print(name, message)
+Practice: Practice: create a multiline string using triple quotes.
+Debugging tip: reproduce the problem with the smallest possible input.
+Page 155 of 300
+Python Complete Guide • Page 156
+Strings
+Indexing
+String indexing starts at zero. Negative indexes count from the end.
+Example
+text = "Python"
+print(text[0])
+print(text[-1])
+Practice: Practice: print first, last, and middle characters.
+Practice tip: change at least one line of the example and observe the result.
+Page 156 of 300
+Python Complete Guide • Page 157
+Strings
+Slicing
+Slicing extracts a range using start:stop:step. The stop position is excluded.
+Example
+text = "Python"
+print(text[0:3])
+print(text[::-1])
+Practice: Practice: reverse a string and extract alternate characters.
+Design tip: prefer small functions with clear responsibilities.
+Page 157 of 300
+Python Complete Guide • Page 158
+Strings
+String Methods
+Useful methods include upper, lower, strip, split, join, replace, startswith, endswith, find, and count.
+Example
+text = " python "
+print(text.strip().upper())
+print("a,b,c".split(","))
+Practice: Practice: clean a user-entered name and normalize capitalization.
+Performance tip: measure before optimizing.
+Page 158 of 300
+Python Complete Guide • Page 159
+Strings
+F-Strings
+F-strings provide readable formatting by placing expressions inside braces.
+Example
+name = "Ravi"
+age = 22
+print(f"{name} is {age} years old.")
+Practice: Practice: format a student's name, marks, and grade in one sentence.
+Security tip: never hard-code passwords, API keys, or tokens in source code.
+Page 159 of 300
+Python Complete Guide • Page 160
+Lists, Tuples, Sets, Dictionaries
+Lists
+Lists are ordered and mutable. They can contain values of different types, although consistent types are often easier to work
+with.
+Example
+numbers = [10, 20, 30]
+numbers.append(40)
+print(numbers)
+Practice: Practice: implement add, update, and delete operations on a list.
+Data tip: validate input before storing or processing it.
+Page 160 of 300
+Python Complete Guide • Page 161
+Lists, Tuples, Sets, Dictionaries
+List Methods
+Important list methods include append, extend, insert, remove, pop, clear, sort, and reverse.
+Example
+items = [3, 1, 2]
+items.sort()
+print(items)
+items.pop()
+print(items)
+Practice: Know the difference between remove(value) and pop(index).
+Remember: type the code yourself instead of only reading it.
+Page 161 of 300
+Python Complete Guide • Page 162
+Lists, Tuples, Sets, Dictionaries
+Tuples
+Tuples are ordered and immutable. They are useful for fixed collections and can be unpacked.
+Example
+point = (10, 20)
+x, y = point
+print(x, y)
+Practice: Practice: return multiple values from a function using a tuple.
+Interview tip: start with a one-sentence definition, then give an example.
+Page 162 of 300
+Python Complete Guide • Page 163
+Lists, Tuples, Sets, Dictionaries
+Sets
+Sets contain unique hashable elements and support union, intersection, difference, and symmetric difference.
+Example
+a = {1, 2, 3}
+b = {3, 4, 5}
+print(a & b)
+print(a | b)
+Practice: Practice: remove duplicates from a list using a set.
+Debugging tip: reproduce the problem with the smallest possible input.
+Page 163 of 300
+Python Complete Guide • Page 164
+Lists, Tuples, Sets, Dictionaries
+Dictionaries
+Dictionaries store key-value pairs and are optimized for key-based lookup.
+Example
+student = {"name": "Ravi", "marks": 85}
+print(student["name"])
+student["marks"] = 90
+Practice: Practice: build a small employee record with name, ID, department, and salary.
+Practice tip: change at least one line of the example and observe the result.
+Page 164 of 300
+Python Complete Guide • Page 165
+Conditions and Loops
+if/elif/else
+Conditional statements choose different execution paths based on Boolean expressions.
+Example
+marks = 82
+if marks >= 90:
+grade = "A"
+elif marks >= 60:
+grade = "B"
+else:
+grade = "C"
+print(grade)
+Practice: Practice: write an electricity-bill slab calculator.
+Design tip: prefer small functions with clear responsibilities.
+Page 165 of 300
+Python Complete Guide • Page 166
+Conditions and Loops
+for Loop
+A for loop iterates over an iterable such as a list, string, tuple, set, dictionary, or range.
+Example
+for i in range(1, 6):
+print(i)
+Practice: Practice: print multiplication tables.
+Performance tip: measure before optimizing.
+Page 166 of 300
+Python Complete Guide • Page 167
+Conditions and Loops
+while Loop
+A while loop repeats while its condition is true. Make sure the loop can eventually terminate.
+Example
+count = 1
+while count <= 5:
+print(count)
+count += 1
+Practice: Practice: build a simple number-guessing loop.
+Security tip: never hard-code passwords, API keys, or tokens in source code.
+Page 167 of 300
+Python Complete Guide • Page 168
+Conditions and Loops
+break and continue
+break exits a loop. continue skips the remaining body for the current iteration.
+Example
+for n in range(1, 10):
+if n == 5:
+break
+print(n)
+Practice: Practice: skip odd numbers using continue.
+Data tip: validate input before storing or processing it.
+Page 168 of 300
+Python Complete Guide • Page 169
+Conditions and Loops
+Nested Loops
+A loop can contain another loop. Nested loops are useful for matrices and pairwise combinations, but can increase runtime.
+Example
+for row in range(3):
+for col in range(3):
+print(row, col)
+Practice: Interview point: always consider time complexity for nested loops.
+Remember: type the code yourself instead of only reading it.
+Page 169 of 300
+Python Complete Guide • Page 170
+Functions
+Defining Functions
+Functions package reusable logic. Good functions have clear names, focused responsibilities, and predictable inputs and
+outputs.
+Example
+def add(a, b):
+return a + b
+print(add(2, 3))
+Practice: Practice: create functions for maximum, minimum, average, and palindrome checking.
+Interview tip: start with a one-sentence definition, then give an example.
+Page 170 of 300
+Python Complete Guide • Page 171
+Functions
+Parameters and Arguments
+Parameters appear in a function definition; arguments are values passed when calling the function. Python supports
+positional and keyword arguments.
+Example
+def greet(name, city):
+print(name, city)
+greet("Ravi", "Hyderabad")
+Practice: Practice: call a function using both positional and keyword arguments.
+Debugging tip: reproduce the problem with the smallest possible input.
+Page 171 of 300
+Python Complete Guide • Page 172
+Functions
+Default Arguments
+Default values are used when callers omit an argument. Avoid mutable default arguments such as [] unless you intentionally
+understand the behavior.
+Example
+def greet(name="User"):
+return f"Hello {name}"
+print(greet())
+Practice: Interview point: default arguments are evaluated when the function is defined.
+Practice tip: change at least one line of the example and observe the result.
+Page 172 of 300
+Python Complete Guide • Page 173
+Functions
+*args
+Use *args to accept a variable number of positional arguments.
+Example
+def total(*numbers):
+return sum(numbers)
+print(total(1, 2, 3, 4))
+Practice: Practice: write a function that accepts any number of marks.
+Design tip: prefer small functions with clear responsibilities.
+Page 173 of 300
+Python Complete Guide • Page 174
+Functions
+**kwargs
+Use **kwargs to accept a variable number of keyword arguments.
+Example
+def show(**data):
+for key, value in data.items():
+print(key, value)
+show(name="Ravi", age=22)
+Practice: Practice: create a flexible employee-profile function.
+Performance tip: measure before optimizing.
+Page 174 of 300
+Python Complete Guide • Page 175
+Comprehensions and Functional Python
+List Comprehensions
+List comprehensions create lists concisely and can include a filtering condition.
+Example
+squares = [x*x for x in range(1, 6)]
+evens = [x for x in range(10) if x % 2 == 0]
+print(squares)
+print(evens)
+Practice: Practice: create a list of cubes for numbers divisible by three.
+Security tip: never hard-code passwords, API keys, or tokens in source code.
+Page 175 of 300
+Python Complete Guide • Page 176
+Comprehensions and Functional Python
+Dictionary Comprehensions
+Dictionary comprehensions build dictionaries from iterable expressions.
+Example
+squares = {x: x*x for x in range(1, 5)}
+print(squares)
+Practice: Practice: create a dictionary mapping employee IDs to names.
+Data tip: validate input before storing or processing it.
+Page 176 of 300
+Python Complete Guide • Page 177
+Comprehensions and Functional Python
+Set Comprehensions
+Set comprehensions produce unique values.
+Example
+values = {x % 3 for x in range(10)}
+print(values)
+Practice: Practice: extract unique word lengths from a list.
+Remember: type the code yourself instead of only reading it.
+Page 177 of 300
+Python Complete Guide • Page 178
+Comprehensions and Functional Python
+lambda
+A lambda expression creates a small anonymous function. Use it when it improves clarity.
+Example
+add = lambda a, b: a + b
+print(add(2, 4))
+Practice: Practice: use lambda to sort a list of tuples by the second element.
+Interview tip: start with a one-sentence definition, then give an example.
+Page 178 of 300
+Python Complete Guide • Page 179
+Comprehensions and Functional Python
+map/filter/sorted
+map transforms items, filter selects items, and sorted returns a new sorted list.
+Example
+numbers = [1, 2, 3, 4]
+print(list(map(lambda x: x*x, numbers)))
+print(list(filter(lambda x: x % 2 == 0, numbers)))
+Practice: Practice: compare a comprehension solution with map/filter.
+Debugging tip: reproduce the problem with the smallest possible input.
+Page 179 of 300
+Python Complete Guide • Page 180
+File Handling and Data Formats
+Reading Files
+Use with open(...) so the file is closed automatically. Specify encoding for predictable text handling.
+Example
+with open("data.txt", "r", encoding="utf-8") as file:
+text = file.read()
+print(text)
+Practice: Practice: read a file and count its lines.
+Practice tip: change at least one line of the example and observe the result.
+Page 180 of 300
+Python Complete Guide • Page 181
+File Handling and Data Formats
+Writing and Appending
+w replaces existing content; a appends to existing content. Be careful with w because it can overwrite data.
+Example
+with open("notes.txt", "w", encoding="utf-8") as f:
+f.write("Python\n")
+with open("notes.txt", "a", encoding="utf-8") as f:
+f.write("SQL\n")
+Practice: Practice: create a simple log file.
+Design tip: prefer small functions with clear responsibilities.
+Page 181 of 300
+Python Complete Guide • Page 182
+File Handling and Data Formats
+CSV
+CSV is common for tabular data. The csv module provides reader and writer helpers.
+Example
+import csv
+with open("students.csv", newline="", encoding="utf-8") as f:
+for row in csv.reader(f):
+print(row)
+Practice: Practice: create and read a CSV containing employee records.
+Performance tip: measure before optimizing.
+Page 182 of 300
+Python Complete Guide • Page 183
+File Handling and Data Formats
+JSON
+JSON is common in APIs and configuration. json.dumps converts a Python object to a JSON string; json.loads parses a
+string.
+Example
+import json
+data = {"name": "Ravi", "age": 22}
+text = json.dumps(data)
+print(text)
+Practice: Practice: save and load a list of employee dictionaries.
+Security tip: never hard-code passwords, API keys, or tokens in source code.
+Page 183 of 300
+Python Complete Guide • Page 184
+File Handling and Data Formats
+pathlib
+pathlib provides an object-oriented interface for filesystem paths.
+Example
+from pathlib import Path
+path = Path("data")
+print(path.exists())
+for file in path.glob("*.txt"):
+print(file)
+Practice: Practice: find all TXT files in a project directory.
+Data tip: validate input before storing or processing it.
+Page 184 of 300
+Python Complete Guide • Page 185
+Exceptions and Robust Programs
+try/except
+Exception handling lets a program respond to expected runtime problems.
+Example
+try:
+value = int(input("Number: "))
+except ValueError:
+print("Invalid number")
+Practice: Practice: safely divide two user-entered numbers.
+Remember: type the code yourself instead of only reading it.
+Page 185 of 300
+Python Complete Guide • Page 186
+Exceptions and Robust Programs
+Multiple Exceptions
+Catch specific exceptions when different errors need different responses.
+Example
+try:
+value = int(input("Number: "))
+print(100 / value)
+except ValueError:
+print("Enter an integer")
+except ZeroDivisionError:
+print("Cannot divide by zero")
+Practice: Do not use broad exception handling as a substitute for understanding errors.
+Interview tip: start with a one-sentence definition, then give an example.
+Page 186 of 300
+Python Complete Guide • Page 187
+Exceptions and Robust Programs
+else and finally
+else runs when no exception occurs. finally runs whether an exception occurs or not.
+Example
+try:
+x = int("10")
+except ValueError:
+print("bad")
+else:
+print("success", x)
+finally:
+print("finished")
+Practice: Practice: use finally to close or clean a resource.
+Debugging tip: reproduce the problem with the smallest possible input.
+Page 187 of 300
+Python Complete Guide • Page 188
+Exceptions and Robust Programs
+raise
+raise lets you deliberately signal an error when an input violates a rule.
+Example
+age = -1
+if age < 0:
+raise ValueError("Age cannot be negative")
+Practice: Practice: validate salary and marks.
+Practice tip: change at least one line of the example and observe the result.
+Page 188 of 300
+Python Complete Guide • Page 189
+Exceptions and Robust Programs
+Custom Exceptions
+Custom exception classes can represent application-specific errors.
+Example
+class InvalidMarksError(Exception):
+pass
+marks = 120
+if marks > 100:
+raise InvalidMarksError("Marks must be 0-100")
+Practice: Practice: create an exception for an invalid employee ID.
+Design tip: prefer small functions with clear responsibilities.
+Page 189 of 300
+Python Complete Guide • Page 190
+Object-Oriented Programming
+Classes and Objects
+A class defines a structure and behavior; an object is an instance of that class.
+Example
+class Employee:
+def __init__(self, name, salary):
+self.name = name
+self.salary = salary
+emp = Employee("Ravi", 40000)
+print(emp.name)
+Practice: Practice: create Student, BankAccount, and Product classes.
+Performance tip: measure before optimizing.
+Page 190 of 300
+Python Complete Guide • Page 191
+Object-Oriented Programming
+__init__ and self
+__init__ initializes a new instance. self refers to the current instance.
+Example
+class Student:
+def __init__(self, name):
+self.name = name
+s = Student("Priya")
+print(s.name)
+Practice: Interview point: self is a conventionally named first parameter for instance methods.
+Security tip: never hard-code passwords, API keys, or tokens in source code.
+Page 191 of 300
+Python Complete Guide • Page 192
+Object-Oriented Programming
+Instance and Class Attributes
+Instance attributes belong to each object. Class attributes are shared at the class level unless shadowed.
+Example
+class Employee:
+company = "ABC"
+def __init__(self, name):
+self.name = name
+print(Employee.company)
+Practice: Practice: add a shared company name and individual employee names.
+Data tip: validate input before storing or processing it.
+Page 192 of 300
+Python Complete Guide • Page 193
+Object-Oriented Programming
+Inheritance
+Inheritance allows a subclass to reuse and extend a base class.
+Example
+class Animal:
+def speak(self):
+print("sound")
+class Dog(Animal):
+pass
+Dog().speak()
+Practice: Practice: create Vehicle and Car classes.
+Remember: type the code yourself instead of only reading it.
+Page 193 of 300
+Python Complete Guide • Page 194
+Object-Oriented Programming
+Polymorphism
+Different classes can implement the same method name and provide different behavior.
+Example
+class Dog:
+def sound(self): print("Bark")
+class Cat:
+def sound(self): print("Meow")
+for animal in [Dog(), Cat()]:
+animal.sound()
+Practice: Practice: create payment classes with a pay() method.
+Interview tip: start with a one-sentence definition, then give an example.
+Page 194 of 300
+Python Complete Guide • Page 195
+Advanced OOP and Python Internals
+Encapsulation
+Python uses naming conventions such as _name and name-mangling for __name. Encapsulation means keeping
+implementation details controlled behind a useful interface.
+Example
+class Account:
+def __init__(self, balance):
+self._balance = balance
+def deposit(self, amount):
+if amount > 0:
+self._balance += amount
+Practice: Practice: add withdraw logic with validation.
+Debugging tip: reproduce the problem with the smallest possible input.
+Page 195 of 300
+Python Complete Guide • Page 196
+Advanced OOP and Python Internals
+Properties
+The property decorator can expose method-based access with attribute-like syntax.
+Example
+class Employee:
+def __init__(self, salary):
+self._salary = salary
+@property
+def salary(self):
+return self._salary
+Practice: Practice: add a setter that rejects negative salary.
+Practice tip: change at least one line of the example and observe the result.
+Page 196 of 300
+Python Complete Guide • Page 197
+Advanced OOP and Python Internals
+Magic Methods
+Special methods such as __str__, __len__, __eq__, and __iter__ allow objects to integrate with Python syntax.
+Example
+class Person:
+def __init__(self, name): self.name = name
+def __str__(self): return self.name
+print(Person("Ravi"))
+Practice: Practice: implement __eq__ for a simple Student class.
+Design tip: prefer small functions with clear responsibilities.
+Page 197 of 300
+Python Complete Guide • Page 198
+Advanced OOP and Python Internals
+Dataclasses
+dataclasses reduce boilerplate for classes that mainly store data.
+Example
+from dataclasses import dataclass
+@dataclass
+class Employee:
+name: str
+age: int
+Practice: Practice: create dataclasses for Product and Address.
+Performance tip: measure before optimizing.
+Page 198 of 300
+Python Complete Guide • Page 199
+Advanced OOP and Python Internals
+Abstract Base Classes
+The abc module can define interfaces that subclasses are expected to implement.
+Example
+from abc import ABC, abstractmethod
+class Shape(ABC):
+@abstractmethod
+def area(self):
+pass
+Practice: Practice: implement Circle and Rectangle.
+Security tip: never hard-code passwords, API keys, or tokens in source code.
+Page 199 of 300
+Python Complete Guide • Page 200
+Iterators, Generators, Decorators, Context Managers
+Iterators
+An iterator implements the iteration protocol and yields one item at a time.
+Example
+items = iter([10, 20, 30])
+print(next(items))
+print(next(items))
+Practice: Practice: create a simple custom iterator.
+Data tip: validate input before storing or processing it.
+Page 200 of 300
+Python Complete Guide • Page 201
+Iterators, Generators, Decorators, Context Managers
+Generators
+Generators use yield and pause execution between values. They are useful for large streams of data.
+Example
+def count_up_to(n):
+i = 1
+while i <= n:
+yield i
+i += 1
+print(list(count_up_to(5)))
+Practice: Practice: create a generator that reads a large file line by line.
+Remember: type the code yourself instead of only reading it.
+Page 201 of 300
+Python Complete Guide • Page 202
+Iterators, Generators, Decorators, Context Managers
+Decorators
+Decorators wrap functions and can add logging, authentication, timing, caching, or validation.
+Example
+def log(func):
+def wrapper(*args, **kwargs):
+print("Calling", func.__name__)
+return func(*args, **kwargs)
+return wrapper
+@log
+def add(a, b): return a + b
+Practice: Practice: build a timing decorator using time.perf_counter.
+Interview tip: start with a one-sentence definition, then give an example.
+Page 202 of 300
+Python Complete Guide • Page 203
+Iterators, Generators, Decorators, Context Managers
+Context Managers
+Context managers manage setup and cleanup. The with statement is the common syntax.
+Example
+with open("notes.txt", "r", encoding="utf-8") as f:
+data = f.read()
+Practice: Practice: explain why with is safer than manually opening and closing files.
+Debugging tip: reproduce the problem with the smallest possible input.
+Page 203 of 300
+Python Complete Guide • Page 204
+Iterators, Generators, Decorators, Context Managers
+functools
+functools contains reusable higher-order helpers such as wraps, partial, lru_cache, and reduce.
+Example
+from functools import lru_cache
+@lru_cache(maxsize=None)
+def fib(n):
+if n < 2: return n
+return fib(n-1) + fib(n-2)
+Practice: Practice: compare cached and uncached recursion.
+Practice tip: change at least one line of the example and observe the result.
+Page 204 of 300
+Python Complete Guide • Page 205
+Modules, Packages, Environments
+Imports
+Imports let one module reuse definitions from another.
+Example
+import math
+print(math.sqrt(49))
+from datetime import date
+print(date.today())
+Practice: Practice: create your own utility.py and import a function from it.
+Design tip: prefer small functions with clear responsibilities.
+Page 205 of 300
+Python Complete Guide • Page 206
+Modules, Packages, Environments
+Packages
+A package organizes related modules. Modern Python supports namespace packages, while __init__.py remains useful for
+package initialization and compatibility patterns.
+Example
+# project example
+myapp/
+__init__.py
+utils.py
+main.py
+Practice: Practice: organize a small calculator project into modules.
+Performance tip: measure before optimizing.
+Page 206 of 300
+Python Complete Guide • Page 207
+Modules, Packages, Environments
+venv
+Virtual environments isolate dependencies between projects.
+Example
+python -m venv venv
+# PowerShell
+.\venv\Scripts\Activate.ps1
+Practice: Practice: create a virtual environment for a new project.
+Security tip: never hard-code passwords, API keys, or tokens in source code.
+Page 207 of 300
+Python Complete Guide • Page 208
+Modules, Packages, Environments
+pip and requirements
+pip installs packages. requirements.txt records dependencies so another environment can reproduce the setup.
+Example
+python -m pip install requests
+python -m pip freeze > requirements.txt
+python -m pip install -r requirements.txt
+Practice: Practice: create requirements.txt for a small API project.
+Data tip: validate input before storing or processing it.
+Page 208 of 300
+Python Complete Guide • Page 209
+Modules, Packages, Environments
+Environment Variables
+Environment variables are useful for configuration and secrets. Avoid committing secrets into source control.
+Example
+import os
+api_key = os.getenv("API_KEY")
+print(bool(api_key))
+Practice: Practice: use a .env strategy appropriate to your project's tooling, while keeping secrets out of Git.
+Remember: type the code yourself instead of only reading it.
+Page 209 of 300
+Python Complete Guide • Page 210
+Regular Expressions and Text Processing
+Regex Basics
+Regular expressions describe text patterns. Python's re module provides matching and substitution functions.
+Example
+import re
+text = "Order 123"
+print(re.search(r"\d+", text).group())
+Practice: Practice: find all numbers in a sentence.
+Interview tip: start with a one-sentence definition, then give an example.
+Page 210 of 300
+Python Complete Guide • Page 211
+Regular Expressions and Text Processing
+findall and groups
+findall returns all non-overlapping matches. Parentheses create groups.
+Example
+import re
+text = "A12 B34 C56"
+print(re.findall(r"([A-Z])(\d+)", text))
+Practice: Practice: extract product codes.
+Debugging tip: reproduce the problem with the smallest possible input.
+Page 211 of 300
+Python Complete Guide • Page 212
+Regular Expressions and Text Processing
+Substitution
+re.sub replaces matching text according to a pattern.
+Example
+import re
+text = "Phone: 123-456"
+print(re.sub(r"\d", "*", text))
+Practice: Practice: mask sensitive digits.
+Practice tip: change at least one line of the example and observe the result.
+Page 212 of 300
+Python Complete Guide • Page 213
+Regular Expressions and Text Processing
+Validation
+Regex can help validate structured text, but complex validation may be clearer with dedicated parsing or explicit logic.
+Example
+import re
+email = "user@example.com"
+print(bool(re.fullmatch(r"[\w.-]+@[\w.-]+\.\w+", email)))
+Practice: Practice: validate a simple employee ID format.
+Design tip: prefer small functions with clear responsibilities.
+Page 213 of 300
+Python Complete Guide • Page 214
+Regular Expressions and Text Processing
+Text Cleaning
+Text cleaning often combines strip, case normalization, whitespace handling, replacement, splitting, and regular
+expressions.
+Example
+text = " Python SQL "
+words = text.split()
+print(" ".join(words).lower())
+Practice: Practice: clean a paragraph before storing it for search.
+Performance tip: measure before optimizing.
+Page 214 of 300
+Python Complete Guide • Page 215
+APIs and Web Development
+HTTP Basics
+HTTP is a protocol used by clients and servers. Common methods include GET, POST, PUT, PATCH, and DELETE.
+Example
+GET /employees
+POST /employees
+PUT /employees/1
+DELETE /employees/1
+Practice: Practice: identify which HTTP method you would use for five sample operations.
+Security tip: never hard-code passwords, API keys, or tokens in source code.
+Page 215 of 300
+Python Complete Guide • Page 216
+APIs and Web Development
+Requests
+The requests library makes HTTP calls convenient. Production code should use timeouts and inspect status codes.
+Example
+import requests
+r = requests.get("https://example.com", timeout=10)
+print(r.status_code)
+Practice: Practice: call a public JSON API and print selected fields.
+Data tip: validate input before storing or processing it.
+Page 216 of 300
+Python Complete Guide • Page 217
+APIs and Web Development
+JSON API
+Many APIs exchange JSON. A response can be parsed into Python dictionaries and lists.
+Example
+data = r.json()
+print(type(data))
+Practice: Practice: safely handle a response that is not valid JSON.
+Remember: type the code yourself instead of only reading it.
+Page 217 of 300
+Python Complete Guide • Page 218
+APIs and Web Development
+Flask Concept
+Flask is a lightweight Python web framework. Routes map HTTP requests to Python functions.
+Example
+from flask import Flask
+app = Flask(__name__)
+@app.get("/")
+def home():
+return {"message": "Hello"}
+Practice: Practice: create /health and /employees endpoints.
+Interview tip: start with a one-sentence definition, then give an example.
+Page 218 of 300
+Python Complete Guide • Page 219
+APIs and Web Development
+Streamlit Concept
+Streamlit lets Python developers build data and AI interfaces quickly. It is useful for prototypes and internal tools.
+Example
+import streamlit as st
+st.title("Python App")
+name = st.text_input("Name")
+if name:
+st.write("Hello", name)
+Practice: Practice: create a simple form with three inputs.
+Debugging tip: reproduce the problem with the smallest possible input.
+Page 219 of 300
+Python Complete Guide • Page 220
+Databases and SQL
+SQLite
+sqlite3 is included with Python and is useful for learning relational database operations.
+Example
+import sqlite3
+conn = sqlite3.connect("app.db")
+cur = conn.cursor()
+cur.execute("CREATE TABLE IF NOT EXISTS student(id INTEGER, name TEXT)")
+conn.commit()
+conn.close()
+Practice: Practice: create a student table and insert records.
+Practice tip: change at least one line of the example and observe the result.
+Page 220 of 300
+Python Complete Guide • Page 221
+Databases and SQL
+Parameterized Queries
+Use parameters instead of constructing SQL with string concatenation when values come from users.
+Example
+cur.execute("INSERT INTO student VALUES (?, ?)", (1, "Ravi"))
+Practice: Interview point: parameterization helps prevent SQL injection.
+Design tip: prefer small functions with clear responsibilities.
+Page 221 of 300
+Python Complete Guide • Page 222
+Databases and SQL
+CRUD
+CRUD means Create, Read, Update, Delete. Python database programs often implement these operations through
+functions or repository classes.
+Example
+INSERT INTO student VALUES (1, "Ravi");
+SELECT * FROM student;
+UPDATE student SET name="Priya" WHERE id=1;
+DELETE FROM student WHERE id=1;
+Practice: Practice: implement CRUD for employees.
+Performance tip: measure before optimizing.
+Page 222 of 300
+Python Complete Guide • Page 223
+Databases and SQL
+Transactions
+A transaction groups operations so they can be committed or rolled back consistently.
+Example
+conn.execute("BEGIN")
+# perform related changes
+conn.commit()
+Practice: Practice: explain why transferring money should update two accounts atomically.
+Security tip: never hard-code passwords, API keys, or tokens in source code.
+Page 223 of 300
+Python Complete Guide • Page 224
+Databases and SQL
+Connection Management
+Connections and cursors are resources. Use reliable cleanup and consider connection pooling in larger applications.
+Example
+try:
+# database operations
+pass
+finally:
+conn.close()
+Practice: Practice: compare direct database access with a service/repository layer.
+Data tip: validate input before storing or processing it.
+Page 224 of 300
+Python Complete Guide • Page 225
+Data Analysis with NumPy and Pandas
+NumPy Arrays
+NumPy provides efficient multidimensional arrays and vectorized numerical operations.
+Example
+import numpy as np
+arr = np.array([1, 2, 3, 4])
+print(arr * 2)
+Practice: Practice: calculate mean, sum, minimum, and maximum.
+Remember: type the code yourself instead of only reading it.
+Page 225 of 300
+Python Complete Guide • Page 226
+Data Analysis with NumPy and Pandas
+Pandas DataFrame
+A DataFrame is a labeled two-dimensional table. It is central to many Python data-analysis workflows.
+Example
+import pandas as pd
+df = pd.DataFrame({"name":["Ravi","Priya"],"marks":[80,90]})
+print(df)
+Practice: Practice: create a DataFrame from a list of dictionaries.
+Interview tip: start with a one-sentence definition, then give an example.
+Page 226 of 300
+Python Complete Guide • Page 227
+Data Analysis with NumPy and Pandas
+Filtering and Sorting
+Boolean filtering selects rows. sort_values orders rows by one or more columns.
+Example
+print(df[df["marks"] >= 85])
+print(df.sort_values("marks", ascending=False))
+Practice: Practice: filter employees by salary and department.
+Debugging tip: reproduce the problem with the smallest possible input.
+Page 227 of 300
+Python Complete Guide • Page 228
+Data Analysis with NumPy and Pandas
+groupby
+groupby supports aggregation by categories.
+Example
+data = pd.DataFrame({"dept":["IT","HR","IT"],"salary":[50,40,60]})
+print(data.groupby("dept")["salary"].mean())
+Practice: Practice: calculate average salary by department.
+Practice tip: change at least one line of the example and observe the result.
+Page 228 of 300
+Python Complete Guide • Page 229
+Data Analysis with NumPy and Pandas
+Missing Data
+Real datasets can contain missing values. Pandas provides isna, fillna, dropna, and related tools.
+Example
+df["marks"] = df["marks"].fillna(0)
+print(df)
+Practice: Practice: decide when to fill versus drop missing values.
+Design tip: prefer small functions with clear responsibilities.
+Page 229 of 300
+Python Complete Guide • Page 230
+Data Engineering and ETL
+ETL
+ETL stands for Extract, Transform, Load. Extract gets data from sources, transform cleans or reshapes it, and load writes it
+to a target.
+Example
+data = extract()
+clean = transform(data)
+load(clean)
+Practice: Practice: describe an ETL pipeline from CSV to PostgreSQL.
+Performance tip: measure before optimizing.
+Page 230 of 300
+Python Complete Guide • Page 231
+Data Engineering and ETL
+Validation
+Data validation checks types, ranges, required fields, duplicates, and business rules before loading.
+Example
+def valid_mark(mark):
+return isinstance(mark, (int, float)) and 0 <= mark <= 100
+Practice: Practice: define validation rules for employee records.
+Security tip: never hard-code passwords, API keys, or tokens in source code.
+Page 231 of 300
+Python Complete Guide • Page 232
+Data Engineering and ETL
+Batch Processing
+Batch jobs process a set of records at scheduled or triggered intervals. They should be restartable and observable.
+Example
+for file in input_files:
+records = read(file)
+process(records)
+Practice: Practice: design a daily sales-file pipeline.
+Data tip: validate input before storing or processing it.
+Page 232 of 300
+Python Complete Guide • Page 233
+Data Engineering and ETL
+Idempotency
+An operation is idempotent when repeating it produces the same intended final state. Idempotency is important when jobs
+retry.
+Example
+processed_ids = set()
+# conceptually skip records already processed
+Practice: Practice: design a safe retry strategy for an API ingestion job.
+Remember: type the code yourself instead of only reading it.
+Page 233 of 300
+Python Complete Guide • Page 234
+Data Engineering and ETL
+Cloud Dataflow Concept
+Cloud data-processing systems can distribute transformations across workers. Python pipelines should separate extraction,
+transformation, validation, and loading logic.
+Example
+def transform(record):
+record["name"] = record["name"].strip()
+return record
+Practice: Practice: explain ETL in simple interview language.
+Interview tip: start with a one-sentence definition, then give an example.
+Page 234 of 300
+Python Complete Guide • Page 235
+Testing, Debugging, Logging
+Unit Tests
+Unit tests verify small units of behavior. Keep tests deterministic and focused.
+Example
+def add(a, b): return a + b
+def test_add():
+assert add(2, 3) == 5
+Practice: Practice: write tests for a palindrome function.
+Debugging tip: reproduce the problem with the smallest possible input.
+Page 235 of 300
+Python Complete Guide • Page 236
+Testing, Debugging, Logging
+Test Edge Cases
+Good tests cover empty input, boundary values, invalid input, duplicates, and unusually large values.
+Example
+assert [] == []
+assert "" == ""
+Practice: Practice: list five edge cases for a binary-search function.
+Practice tip: change at least one line of the example and observe the result.
+Page 236 of 300
+Python Complete Guide • Page 237
+Testing, Debugging, Logging
+Debugging
+Debugging is the process of finding the cause of incorrect behavior. Reproduce the issue, inspect inputs, isolate the failing
+component, fix it, and retest.
+Example
+print("debug value:", value)
+Practice: Use a debugger or logging for nontrivial programs rather than adding many permanent print statements.
+Design tip: prefer small functions with clear responsibilities.
+Page 237 of 300
+Python Complete Guide • Page 238
+Testing, Debugging, Logging
+Logging
+Logging provides structured runtime information. Levels include DEBUG, INFO, WARNING, ERROR, and CRITICAL.
+Example
+import logging
+logging.basicConfig(level=logging.INFO)
+logging.info("Application started")
+Practice: Practice: add logging to a file-processing script.
+Performance tip: measure before optimizing.
+Page 238 of 300
+Python Complete Guide • Page 239
+Testing, Debugging, Logging
+Code Quality
+Readable names, small functions, consistent formatting, tests, documentation, and clear error handling make code easier to
+maintain.
+Example
+def calculate_total(price, quantity):
+return price * quantity
+Practice: Practice: refactor one long function into three focused functions.
+Security tip: never hard-code passwords, API keys, or tokens in source code.
+Page 239 of 300
+Python Complete Guide • Page 240
+Concurrency and Async
+Threading Concept
+Threads can help with I/O-bound work because waiting can overlap. Shared state requires careful synchronization.
+Example
+import threading
+def work():
+print("working")
+thread = threading.Thread(target=work)
+thread.start()
+thread.join()
+Practice: Practice: identify an I/O-bound task that could benefit from concurrency.
+Data tip: validate input before storing or processing it.
+Page 240 of 300
+Python Complete Guide • Page 241
+Concurrency and Async
+Multiprocessing Concept
+Processes have separate memory spaces and can execute CPU-bound work in parallel across cores.
+Example
+from multiprocessing import Process
+def work():
+print("process")
+p = Process(target=work)
+p.start()
+p.join()
+Practice: Practice: explain why CPU-bound and I/O-bound tasks may need different approaches.
+Remember: type the code yourself instead of only reading it.
+Page 241 of 300
+Python Complete Guide • Page 242
+Concurrency and Async
+asyncio
+asyncio supports cooperative asynchronous programming using async and await.
+Example
+import asyncio
+async def task():
+await asyncio.sleep(1)
+return "done"
+print(asyncio.run(task()))
+Practice: Practice: model three independent network requests as asynchronous tasks.
+Interview tip: start with a one-sentence definition, then give an example.
+Page 242 of 300
+Python Complete Guide • Page 243
+Concurrency and Async
+Race Conditions
+A race condition occurs when program correctness depends on timing between concurrent operations. Locks or other
+synchronization strategies can protect shared state.
+Example
+# conceptual example
+# lock protects shared state
+Practice: Practice: explain why incrementing a shared counter may need synchronization.
+Debugging tip: reproduce the problem with the smallest possible input.
+Page 243 of 300
+Python Complete Guide • Page 244
+Concurrency and Async
+Choosing a Strategy
+Use straightforward synchronous code unless concurrency solves a real bottleneck. Choose threads/processes/async
+according to workload and library support.
+Example
+work_type = "I/O-bound"
+print("Choose based on workload:", work_type)
+Practice: Interview point: measure before optimizing.
+Practice tip: change at least one line of the example and observe the result.
+Page 244 of 300
+Python Complete Guide • Page 245
+Python Performance and Memory
+Big-O Basics
+Algorithmic complexity describes how resource use grows with input size. Common classes include O(1), O(log n), O(n),
+O(n log n), and O(n²).
+Example
+for value in values:
+print(value) # O(n) loop
+Practice: Practice: estimate the complexity of five simple algorithms.
+Design tip: prefer small functions with clear responsibilities.
+Page 245 of 300
+Python Complete Guide • Page 246
+Python Performance and Memory
+List vs Set Lookup
+Lists generally require scanning for membership, while sets are hash-based and usually provide average constant-time
+membership.
+Example
+items = {1, 2, 3}
+print(2 in items)
+Practice: Practice: explain when converting a list to a set can improve repeated membership checks.
+Performance tip: measure before optimizing.
+Page 246 of 300
+Python Complete Guide • Page 247
+Python Performance and Memory
+Generators for Memory
+Generators produce values lazily and can reduce peak memory usage for large sequences.
+Example
+def lines(path):
+with open(path, encoding="utf-8") as f:
+for line in f:
+yield line.rstrip()
+Practice: Practice: process a large text file without calling read() on the whole file.
+Security tip: never hard-code passwords, API keys, or tokens in source code.
+Page 247 of 300
+Python Complete Guide • Page 248
+Python Performance and Memory
+Profiling
+Profiling measures where a program spends time or memory. Optimize based on measurements rather than guesses.
+Example
+import time
+start = time.perf_counter()
+# code
+elapsed = time.perf_counter() - start
+print(elapsed)
+Practice: Practice: time two implementations of a simple operation.
+Data tip: validate input before storing or processing it.
+Page 248 of 300
+Python Complete Guide • Page 249
+Python Performance and Memory
+Caching
+Caching avoids repeated expensive computation when inputs repeat. functools.lru_cache is useful for pure or appropriately
+cacheable functions.
+Example
+from functools import lru_cache
+@lru_cache(None)
+def square(x): return x*x
+Practice: Practice: explain the tradeoff between speed and memory.
+Remember: type the code yourself instead of only reading it.
+Page 249 of 300
+Python Complete Guide • Page 250
+RAG, LLM and AI with Python
+RAG Overview
+Retrieval-Augmented Generation combines information retrieval with language generation. The system retrieves relevant
+document chunks and supplies them as context to an LLM.
+Example
+documents -> chunks -> embeddings -> vector DB -> retrieve -> LLM -> answer
+Practice: Interview answer: RAG helps ground answers in a selected knowledge source instead of relying only on model
+parameters.
+Interview tip: start with a one-sentence definition, then give an example.
+Page 250 of 300
+Python Complete Guide • Page 251
+RAG, LLM and AI with Python
+Document Ingestion
+Ingestion loads source files, extracts text, cleans it, splits it into chunks, creates embeddings, and stores vectors with
+metadata.
+Example
+PDF/TXT -> text -> chunks -> embeddings -> ChromaDB
+Practice: Practice: explain ingestion in six simple steps.
+Debugging tip: reproduce the problem with the smallest possible input.
+Page 251 of 300
+Python Complete Guide • Page 252
+RAG, LLM and AI with Python
+Embeddings
+An embedding represents text as a numerical vector. Semantically related text can be close in vector space.
+Example
+query = "leave policy"
+# embedding(query) -> vector
+Practice: Practice: explain why keyword search and semantic search can behave differently.
+Practice tip: change at least one line of the example and observe the result.
+Page 252 of 300
+Python Complete Guide • Page 253
+RAG, LLM and AI with Python
+Vector Database
+A vector database stores embeddings and metadata and supports similarity search. ChromaDB is commonly used in local
+RAG prototypes.
+Example
+collection.add(
+documents=["leave policy"],
+ids=["doc1"]
+)
+Practice: Practice: explain what is stored in a vector database.
+Design tip: prefer small functions with clear responsibilities.
+Page 253 of 300
+Python Complete Guide • Page 254
+RAG, LLM and AI with Python
+Retriever and LLM
+A retriever finds relevant chunks. The LLM receives the question and retrieved context and generates the response.
+Example
+question -> retriever -> context -> prompt -> LLM -> answer
+Practice: Practice: explain why retrieval quality strongly affects RAG answer quality.
+Performance tip: measure before optimizing.
+Page 254 of 300
+Python Complete Guide • Page 255
+Enterprise RAG Project
+Project Architecture
+An enterprise chatbot can combine HR documents, technical documentation, policies, Jira tickets, and Confluence
+knowledge. A common pipeline is ingestion, chunking, embeddings, vector storage, retrieval, prompt construction, and local
+LLM generation.
+Example
+Jira + Confluence + Documents
+|
+Ingestion
+|
+Chunking
+|
+Embeddings
+|
+ChromaDB
+|
+User Question
+|
+Retrieval
+|
+Ollama/Mistral
+Practice: Practice: explain this architecture in one minute.
+Security tip: never hard-code passwords, API keys, or tokens in source code.
+Page 255 of 300
+Python Complete Guide • Page 256
+Enterprise RAG Project
+Python Backend Role
+Python can orchestrate document loaders, preprocessing, retrieval, prompt construction, API routes, and application logic.
+Example
+def answer_question(question):
+context = retrieve(question)
+return generate(question, context)
+Practice: Practice: separate UI code from retrieval logic.
+Data tip: validate input before storing or processing it.
+Page 256 of 300
+Python Complete Guide • Page 257
+Enterprise RAG Project
+ChromaDB Role
+ChromaDB can store document chunks and embeddings. Metadata such as source path and document type can help trace
+answers back to source material.
+Example
+metadata = {"source": "hr/leave_policy.txt", "type": "hr"}
+Practice: Practice: explain why source metadata matters.
+Remember: type the code yourself instead of only reading it.
+Page 257 of 300
+Python Complete Guide • Page 258
+Enterprise RAG Project
+Ollama and Mistral
+Ollama provides a local model-serving workflow. Mistral is a family of language models. In a local RAG project, the model
+can generate responses from retrieved context without requiring every query to be sent to a hosted model API.
+Example
+question = "How many paid leaves?"
+context = "Employees receive 20 paid leaves."
+# LLM uses question + context
+Practice: Practice: explain the privacy and deployment considerations of local inference without making absolute security
+claims.
+Interview tip: start with a one-sentence definition, then give an example.
+Page 258 of 300
+Python Complete Guide • Page 259
+Enterprise RAG Project
+Streamlit UI
+Streamlit can provide document upload, question input, status messages, and answer display with relatively little Python
+code.
+Example
+import streamlit as st
+st.title("Enterprise RAG Chatbot")
+question = st.text_input("Ask a question")
+Practice: Practice: design a simple UI with upload, question, answer, and source sections.
+Debugging tip: reproduce the problem with the smallest possible input.
+Page 259 of 300
+Python Complete Guide • Page 260
+DSA with Python
+Arrays and Lists
+Python lists are commonly used for array-style interview problems. Learn traversal, insertion, deletion, searching, and
+two-pointer patterns.
+Example
+nums = [1, 2, 3, 4]
+for x in nums:
+print(x)
+Practice: Practice: find the largest element without max().
+Practice tip: change at least one line of the example and observe the result.
+Page 260 of 300
+Python Complete Guide • Page 261
+DSA with Python
+Two Sum
+The two-sum problem asks for two values whose sum equals a target. A hash map can remember previously seen values.
+Example
+nums = [2, 7, 11, 15]
+target = 9
+seen = {}
+for i, x in enumerate(nums):
+if target-x in seen:
+print(seen[target-x], i)
+break
+seen[x] = i
+Practice: Complexity: O(n) average time and O(n) extra space.
+Design tip: prefer small functions with clear responsibilities.
+Page 261 of 300
+Python Complete Guide • Page 262
+DSA with Python
+Sorting
+Python's sorted() returns a new list; list.sort() sorts in place. Python's built-in sorting is stable.
+Example
+values = [5, 2, 8, 1]
+print(sorted(values))
+values.sort()
+print(values)
+Practice: Practice: sort objects by multiple fields.
+Performance tip: measure before optimizing.
+Page 262 of 300
+Python Complete Guide • Page 263
+DSA with Python
+Binary Search
+Binary search repeatedly halves a sorted search space. It runs in O(log n) time.
+Example
+def binary_search(a, target):
+lo, hi = 0, len(a)-1
+while lo <= hi:
+mid = (lo + hi) // 2
+if a[mid] == target: return mid
+if a[mid] < target: lo = mid + 1
+else: hi = mid - 1
+return -1
+Practice: Practice: implement lower_bound-style searching.
+Security tip: never hard-code passwords, API keys, or tokens in source code.
+Page 263 of 300
+Python Complete Guide • Page 264
+DSA with Python
+Linked Lists
+A singly linked list contains nodes with data and a reference to the next node.
+Example
+class Node:
+def __init__(self, data):
+self.data = data
+self.next = None
+Practice: Practice: insert at beginning, end, update, delete, and traverse.
+Data tip: validate input before storing or processing it.
+Page 264 of 300
+Python Complete Guide • Page 265
+DSA with Python
+Stacks and Queues
+A stack follows LIFO. A queue follows FIFO. Python's collections.deque is efficient for both ends.
+Example
+from collections import deque
+q = deque()
+q.append(10)
+q.append(20)
+print(q.popleft())
+Practice: Practice: solve valid-parentheses using a stack.
+Remember: type the code yourself instead of only reading it.
+Page 265 of 300
+Python Complete Guide • Page 266
+DSA with Python
+Hashing
+Dictionaries and sets support fast average-case lookup and are central to many interview problems.
+Example
+freq = {}
+for ch in "banana":
+freq[ch] = freq.get(ch, 0) + 1
+print(freq)
+Practice: Practice: frequency counting, first unique character, and duplicate detection.
+Interview tip: start with a one-sentence definition, then give an example.
+Page 266 of 300
+Python Complete Guide • Page 267
+DSA with Python
+Trees
+Trees are hierarchical structures. Common traversals are preorder, inorder, postorder, and level order.
+Example
+class Node:
+def __init__(self, value):
+self.value = value
+self.left = None
+self.right = None
+Practice: Practice: implement recursive inorder traversal.
+Debugging tip: reproduce the problem with the smallest possible input.
+Page 267 of 300
+Python Complete Guide • Page 268
+DSA with Python
+Graphs
+Graphs consist of vertices and edges. BFS and DFS are fundamental traversal methods.
+Example
+from collections import deque
+# adjacency list concept
+G = {"A":["B","C"], "B":["D"], "C":[], "D":[]}
+Practice: Practice: implement BFS and DFS.
+Practice tip: change at least one line of the example and observe the result.
+Page 268 of 300
+Python Complete Guide • Page 269
+DSA with Python
+Dynamic Programming
+Dynamic programming solves overlapping subproblems by storing results. Start with memoization and tabulation.
+Example
+from functools import lru_cache
+@lru_cache(None)
+def fib(n):
+if n < 2: return n
+return fib(n-1) + fib(n-2)
+Practice: Practice: solve climbing stairs and house robber.
+Design tip: prefer small functions with clear responsibilities.
+Page 269 of 300
+Python Complete Guide • Page 270
+Projects and Interview Preparation
+Beginner Project: Calculator
+Build a command-line calculator using functions, input validation, and exception handling.
+Example
+def add(a,b): return a+b
+def sub(a,b): return a-b
+print(add(10, 5))
+Practice: Extensions: menu, history, division-by-zero handling, and tests.
+Performance tip: measure before optimizing.
+Page 270 of 300
+Python Complete Guide • Page 271
+Projects and Interview Preparation
+Beginner Project: Student Manager
+Store student records in a list of dictionaries or a SQLite database. Implement CRUD operations.
+Example
+students = []
+students.append({"id": 1, "name": "Ravi", "marks": 85})
+print(students)
+Practice: Extensions: search, sorting, validation, persistence.
+Security tip: never hard-code passwords, API keys, or tokens in source code.
+Page 271 of 300
+Python Complete Guide • Page 272
+Projects and Interview Preparation
+Intermediate Project: Weather API
+Fetch weather data from an API, parse JSON, save records, analyze them with Pandas, and display a small dashboard.
+Example
+import requests
+# response = requests.get(url, timeout=10)
+# data = response.json()
+Practice: Extensions: CSV storage, error handling, charts, and Streamlit.
+Data tip: validate input before storing or processing it.
+Page 272 of 300
+Python Complete Guide • Page 273
+Projects and Interview Preparation
+Intermediate Project: Employee Management
+Build CRUD operations with Flask or Streamlit and SQLite/PostgreSQL. Separate database code from UI code.
+Example
+def create_employee(name, department):
+return {"name": name, "department": department}
+Practice: Extensions: validation, search, pagination, logging, and tests.
+Remember: type the code yourself instead of only reading it.
+Page 273 of 300
+Python Complete Guide • Page 274
+Projects and Interview Preparation
+Advanced Project: Enterprise RAG
+Build a RAG chatbot with document ingestion, chunking, embeddings, ChromaDB, retrieval, Ollama/Mistral, and a Streamlit
+interface.
+Example
+question = "What is the leave policy?"
+# retrieve context -> generate answer
+Practice: Extensions: citations, metadata filters, source display, evaluation, access control, and ingestion from enterprise
+systems.
+Interview tip: start with a one-sentence definition, then give an example.
+Page 274 of 300
+Python Complete Guide • Page 275
+Projects and Interview Preparation
+Python Interview: Short Answers
+For interviews, define the concept in one sentence, give a small example, and mention a practical use.
+Example
+Q: List vs tuple?
+A: List is mutable; tuple is immutable.
+Practice: Practice this format for functions, OOP, exceptions, generators, decorators, APIs, SQL connectivity, and RAG.
+Debugging tip: reproduce the problem with the smallest possible input.
+Page 275 of 300
+Python Complete Guide • Page 276
+Projects and Interview Preparation
+Python Interview: Coding Approach
+For coding questions: clarify input/output, give a simple approach, improve it if necessary, state complexity, and test edge
+cases.
+Example
+Example:
+Input: [2,7,11,15], target=9
+Output: indices [0,1]
+Practice: Practice explaining your thought process clearly without jumping directly to code.
+Practice tip: change at least one line of the example and observe the result.
+Page 276 of 300
+Python Complete Guide • Page 277
+Projects and Interview Preparation
+Resume Project Explanation
+A strong project explanation covers problem, solution, architecture, technologies, your contribution, challenges, and result.
+Example
+Problem -> Solution -> Architecture -> Technologies -> Challenge -> Result
+Practice: Practice a 60-second and 2-minute version of your Enterprise RAG project.
+Design tip: prefer small functions with clear responsibilities.
+Page 277 of 300
+Python Complete Guide • Page 278
+Projects and Interview Preparation
+Final Revision
+The most important Python foundations are data types, control flow, functions, collections, exceptions, OOP, modules, file
+handling, testing, and practical projects. Advanced learners should add iterators, generators, decorators, context managers,
+concurrency, performance, APIs, databases, and data tools.
+Example
+print("Learn -> Practice -> Explain -> Build -> Review")
+Practice: Final goal: write Python programs independently rather than memorizing isolated syntax.
+Performance tip: measure before optimizing.
+Page 278 of 300
+Python Complete Guide • Page 279
+Python Foundations
+What is Python?
+Python is a high-level, general-purpose programming language. It emphasizes readable syntax and supports procedural,
+object-oriented, and functional programming. Python is widely used for automation, backend development, data analysis,
+data engineering, testing, scripting, and AI applications.
+Example
+print("Hello, Python!")
+Practice: Practice: change the message, print your name, and print three lines.
+Security tip: never hard-code passwords, API keys, or tokens in source code.
+Page 279 of 300
+Python Complete Guide • Page 280
+Python Foundations
+How Python Executes
+A Python source file normally has a .py extension. The interpreter executes Python code. Python implementations can
+compile source into bytecode before execution. For beginners, the important idea is that Python lets you write readable
+source and execute it through the Python runtime.
+Example
+print("Source code runs through the Python runtime.")
+Practice: Interview point: Python is commonly described as interpreted, although its implementation also uses compilation
+to bytecode.
+Data tip: validate input before storing or processing it.
+Page 280 of 300
+Python Complete Guide • Page 281
+Python Foundations
+Installing and Checking Python
+On Windows, use the Python launcher or python command. Always verify the version in the terminal before installing
+packages.
+Example
+python --version
+python -m pip --version
+Practice: Practice: create a folder called python_learning and create hello.py.
+Remember: type the code yourself instead of only reading it.
+Page 281 of 300
+Python Complete Guide • Page 282
+Python Foundations
+Comments
+Comments document intent and are ignored by the Python interpreter. Use comments to explain why something is done, not
+every obvious line.
+Example
+# Calculate the total price
+total = 100 + 50
+print(total)
+Practice: Practice: add comments to a small marks-calculation program.
+Interview tip: start with a one-sentence definition, then give an example.
+Page 282 of 300
+Python Complete Guide • Page 283
+Python Foundations
+Indentation
+Python uses indentation to define blocks. Consistent indentation is essential. Four spaces are the common convention.
+Example
+if 10 > 5:
+print("10 is greater")
+Practice: Common mistake: mixing indentation levels or using a line without the required indentation.
+Debugging tip: reproduce the problem with the smallest possible input.
+Page 283 of 300
+Python Complete Guide • Page 284
+Variables and Data Types
+Variables
+A variable is a name bound to an object. Python does not require a separate variable declaration with a type.
+Example
+name = "Janardhan"
+age = 22
+print(name, age)
+Practice: Practice: create variables for city, college, CGPA, and graduation year.
+Practice tip: change at least one line of the example and observe the result.
+Page 284 of 300
+Python Complete Guide • Page 285
+Variables and Data Types
+Integers and Floats
+int represents whole numbers. float represents floating-point numbers. Arithmetic can produce a float even when inputs are
+integers, depending on the operator.
+Example
+a = 10
+b = 3
+print(a + b)
+print(a / b)
+print(a // b)
+Practice: Remember: / performs true division; // performs floor division.
+Design tip: prefer small functions with clear responsibilities.
+Page 285 of 300
+Python Complete Guide • Page 286
+Variables and Data Types
+Booleans and None
+bool has two values: True and False. None represents the absence of a value and is commonly used as a default or missing
+result.
+Example
+is_active = True
+result = None
+print(is_active)
+print(result)
+Practice: Use `is None` when checking for None.
+Performance tip: measure before optimizing.
+Page 286 of 300
+Python Complete Guide • Page 287
+Variables and Data Types
+Type Conversion
+Python provides constructors such as int, float, str, and bool for many conversions. Invalid text conversions can raise
+ValueError.
+Example
+age_text = "22"
+age = int(age_text)
+print(age + 1)
+Practice: Practice: convert user input for age and marks into numbers.
+Security tip: never hard-code passwords, API keys, or tokens in source code.
+Page 287 of 300
+Python Complete Guide • Page 288
+Variables and Data Types
+Type Checking
+type() shows an object's type. isinstance() is usually preferable when checking whether an object belongs to a type or class
+hierarchy.
+Example
+value = 10
+print(type(value))
+print(isinstance(value, int))
+Practice: Interview point: Python is dynamically typed; names can be rebound to objects of different types.
+Data tip: validate input before storing or processing it.
+Page 288 of 300
+Python Complete Guide • Page 289
+Operators and Expressions
+Arithmetic Operators
+Python supports addition, subtraction, multiplication, division, floor division, remainder, and exponentiation.
+Example
+a = 10
+b = 3
+print(a + b)
+print(a - b)
+print(a * b)
+print(a / b)
+print(a // b)
+print(a % b)
+print(a ** b)
+Practice: Practice: calculate simple interest and compound interest.
+Remember: type the code yourself instead of only reading it.
+Page 289 of 300
+Python Complete Guide • Page 290
+Operators and Expressions
+Comparison Operators
+Comparisons return Boolean values. Operators include ==, !=, <, <=, >, and >=.
+Example
+marks = 75
+print(marks >= 60)
+print(marks == 75)
+Practice: Do not confuse = assignment with == comparison.
+Interview tip: start with a one-sentence definition, then give an example.
+Page 290 of 300
+Python Complete Guide • Page 291
+Operators and Expressions
+Logical Operators
+and requires both conditions to be true, or requires at least one condition to be true, and not reverses a Boolean result.
+Example
+age = 22
+has_id = True
+print(age >= 18 and has_id)
+Practice: Practice: create an eligibility condition using age and score.
+Debugging tip: reproduce the problem with the smallest possible input.
+Page 291 of 300
+Python Complete Guide • Page 292
+Operators and Expressions
+Membership Operators
+in and not in test membership in sequences and containers.
+Example
+name = "Python"
+print("Py" in name)
+print("Java" not in name)
+Practice: Membership is commonly used with strings, lists, sets, tuples, and dictionary keys.
+Practice tip: change at least one line of the example and observe the result.
+Page 292 of 300
+Python Complete Guide • Page 293
+Operators and Expressions
+Identity Operators
+is and is not test object identity, not general value equality. Use == for value comparison.
+Example
+a = None
+print(a is None)
+Practice: Interview point: `is` is appropriate for singleton checks such as None.
+Design tip: prefer small functions with clear responsibilities.
+Page 293 of 300
+Python Complete Guide • Page 294
+Strings
+String Creation
+Strings are sequences of Unicode characters. They can be written with single, double, or triple quotes.
+Example
+name = "Python"
+message = 'Hello'
+print(name, message)
+Practice: Practice: create a multiline string using triple quotes.
+Performance tip: measure before optimizing.
+Page 294 of 300
+Python Complete Guide • Page 295
+Strings
+Indexing
+String indexing starts at zero. Negative indexes count from the end.
+Example
+text = "Python"
+print(text[0])
+print(text[-1])
+Practice: Practice: print first, last, and middle characters.
+Security tip: never hard-code passwords, API keys, or tokens in source code.
+Page 295 of 300
+Python Complete Guide • Page 296
+Strings
+Slicing
+Slicing extracts a range using start:stop:step. The stop position is excluded.
+Example
+text = "Python"
+print(text[0:3])
+print(text[::-1])
+Practice: Practice: reverse a string and extract alternate characters.
+Data tip: validate input before storing or processing it.
+Page 296 of 300
+Python Complete Guide • Page 297
+Strings
+String Methods
+Useful methods include upper, lower, strip, split, join, replace, startswith, endswith, find, and count.
+Example
+text = " python "
+print(text.strip().upper())
+print("a,b,c".split(","))
+Practice: Practice: clean a user-entered name and normalize capitalization.
+Remember: type the code yourself instead of only reading it.
+Page 297 of 300
+Python Complete Guide • Page 298
+Strings
+F-Strings
+F-strings provide readable formatting by placing expressions inside braces.
+Example
+name = "Ravi"
+age = 22
+print(f"{name} is {age} years old.")
+Practice: Practice: format a student's name, marks, and grade in one sentence.
+Interview tip: start with a one-sentence definition, then give an example.
+Page 298 of 300
+Python Complete Guide • Page 299
+Lists, Tuples, Sets, Dictionaries
+Lists
+Lists are ordered and mutable. They can contain values of different types, although consistent types are often easier to work
+with.
+Example
+numbers = [10, 20, 30]
+numbers.append(40)
+print(numbers)
+Practice: Practice: implement add, update, and delete operations on a list.
+Debugging tip: reproduce the problem with the smallest possible input.
+Page 299 of 300
+Python Complete Guide • Page 300
+Lists, Tuples, Sets, Dictionaries
+List Methods
+Important list methods include append, extend, insert, remove, pop, clear, sort, and reverse.
+Example
+items = [3, 1, 2]
+items.sort()
+print(items)
+items.pop()
+print(items)
+Practice: Know the difference between remove(value) and pop(index).
+Practice tip: change at least one line of the example and observe the result.
+Page 300 of 300

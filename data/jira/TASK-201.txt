@@ -1,0 +1,21 @@
+Jira Task: TASK-201
+
+Title: Update employee dashboard
+
+Type: Task
+
+Priority: Medium
+
+Status: To Do
+
+Description:
+Update the employee dashboard to display leave balance and employee benefits.
+
+Requirements:
+1. Display available leave.
+2. Display used leave.
+3. Display remaining leave.
+4. Display employee benefit information.
+
+Assigned To:
+Frontend Development Team

@@ -1,0 +1,21 @@
+Friend Information
+
+Name: Mahivarun
+
+Relationship: Best Friend
+
+Mahivarun is Janardhan's best friend.
+
+Interests:
+- Technology
+- Learning Python
+- Playing games
+- Watching movies
+
+Skills:
+- Python basics
+- SQL basics
+
+General Information:
+Mahivarun is a close friend of Janardhan.
+They discuss programming and technology topics together.

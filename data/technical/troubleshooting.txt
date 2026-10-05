@@ -1,0 +1,17 @@
+Troubleshooting Guide
+
+Problem: Application is not connecting to the database.
+
+Step 1: Check whether the database server is running.
+
+Step 2: Verify the database host and port.
+
+Step 3: Check the username and password.
+
+Step 4: Verify network connectivity.
+
+Problem: API returns a 500 error.
+
+Check the application logs for the detailed error message.
+
+If the issue continues, create a Jira bug ticket.

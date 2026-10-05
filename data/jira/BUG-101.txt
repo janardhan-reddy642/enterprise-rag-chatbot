@@ -1,0 +1,21 @@
+Jira Bug: BUG-101
+
+Title: Login API returning 500 error
+
+Type: Bug
+
+Priority: High
+
+Status: In Progress
+
+Description:
+Users are receiving a 500 Internal Server Error when attempting to log in.
+
+Possible Cause:
+Database connection failure.
+
+Assigned To:
+Backend Development Team
+
+Resolution:
+The team is checking database connectivity and application logs.
