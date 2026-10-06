@@ -1,6 +1,6 @@
 # ============================================================
 # RAG CHATBOT
-# FAST RAG + MODERN UI + BUTTONS + IMAGE GENERATOR
+# LOGIN + FAST RAG + MODERN UI + BUTTONS + IMAGE GENERATOR
 # Streamlit + Chroma + MiniLM + Groq Cloud LLM
 # ============================================================
 
@@ -29,6 +29,133 @@ st.set_page_config(
 
 
 # ============================================================
+# LOGIN AUTHENTICATION
+# ============================================================
+
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+
+
+def login_page():
+
+    st.markdown(
+        """
+        <style>
+
+        .login-container {
+            max-width: 450px;
+            margin: 90px auto 20px auto;
+            padding: 35px;
+            border-radius: 22px;
+            border: 1px solid rgba(128,128,128,0.25);
+            background: rgba(255,255,255,0.035);
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        }
+
+        .login-title {
+            font-size: 34px;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .login-subtitle {
+            font-size: 15px;
+            opacity: 0.65;
+            margin-bottom: 25px;
+        }
+
+        </style>
+
+        <div class="login-container">
+
+            <div class="login-title">
+                🤖 RAG Chatbot
+            </div>
+
+            <div class="login-subtitle">
+                Enterprise AI Assistant
+                <br>
+                Please login to continue
+            </div>
+
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+    with st.form("login_form"):
+
+        username = st.text_input(
+            "👤 Username",
+            placeholder="Enter username"
+        )
+
+        password = st.text_input(
+            "🔑 Password",
+            type="password",
+            placeholder="Enter password"
+        )
+
+        login_button = st.form_submit_button(
+            "🚀 Login",
+            use_container_width=True
+        )
+
+        if login_button:
+
+            correct_username = st.secrets.get(
+                "USERNAME",
+                ""
+            )
+
+            correct_password = st.secrets.get(
+                "PASSWORD",
+                ""
+            )
+
+            correct_username = str(
+                correct_username
+            ).strip()
+
+            correct_password = str(
+                correct_password
+            ).strip()
+
+            if (
+                username.strip() == correct_username
+                and password == correct_password
+                and correct_username
+                and correct_password
+            ):
+
+                st.session_state.logged_in = True
+
+                st.success(
+                    "✅ Login successful!"
+                )
+
+                st.rerun()
+
+            else:
+
+                st.error(
+                    "❌ Invalid username or password."
+                )
+
+
+# ============================================================
+# SHOW LOGIN BEFORE CHATBOT
+# ============================================================
+
+if not st.session_state.logged_in:
+
+    login_page()
+
+    st.stop()
+
+
+# ============================================================
 # PATHS
 # ============================================================
 
@@ -38,7 +165,9 @@ DATA_DIR = BASE_DIR / "data"
 CHROMA_DIR = BASE_DIR / "chroma_db"
 UPLOAD_DIR = DATA_DIR / "uploaded"
 
-EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
+EMBEDDING_MODEL = (
+    "sentence-transformers/all-MiniLM-L6-v2"
+)
 
 
 # ============================================================
@@ -245,23 +374,19 @@ def load_llm():
 
     try:
 
-        # ----------------------------------------------------
-        # Read Groq API key from Streamlit Cloud Secrets
-        # ----------------------------------------------------
-
-        api_key = st.secrets.get("GROQ_API_KEY")
+        api_key = st.secrets.get(
+            "GROQ_API_KEY"
+        )
 
         if api_key is None:
             return None
 
-        api_key = str(api_key).strip()
+        api_key = str(
+            api_key
+        ).strip()
 
         if not api_key:
             return None
-
-        # ----------------------------------------------------
-        # Create Groq LangChain LLM
-        # ----------------------------------------------------
 
         llm = ChatGroq(
             groq_api_key=api_key,
@@ -296,6 +421,7 @@ try:
 except Exception:
 
     vector_db = None
+
     st.session_state.system_ready = False
 
 
@@ -452,7 +578,9 @@ def svg_to_data_uri(svg):
         svg.encode("utf-8")
     ).decode("utf-8")
 
-    return f"data:image/svg+xml;base64,{encoded}"
+    return (
+        f"data:image/svg+xml;base64,{encoded}"
+    )
 
 
 # ============================================================
@@ -463,11 +591,15 @@ with st.sidebar:
 
     st.markdown("## 🤖 RAG Chatbot")
 
-    st.caption("Fast RAG + Groq Cloud AI")
+    st.caption(
+        "Fast RAG + Groq Cloud AI"
+    )
 
     st.markdown("---")
 
-    st.markdown("### 📚 Knowledge Base")
+    st.markdown(
+        "### 📚 Knowledge Base"
+    )
 
     st.markdown(
         """
@@ -493,20 +625,58 @@ with st.sidebar:
 
     if st.session_state.system_ready:
 
-        st.success("🟢 RAG System Online")
+        st.success(
+            "🟢 RAG System Online"
+        )
 
     else:
 
-        st.error("🔴 RAG System Offline")
+        st.error(
+            "🔴 RAG System Offline"
+        )
 
     st.markdown("---")
 
     st.markdown("### 🧠 Models")
 
-    st.caption(f"LLM: `{LLM_MODEL}`")
-    st.caption("Embedding: MiniLM")
-    st.caption("Vector DB: Chroma")
-    st.caption("Runtime: Groq Cloud AI")
+    st.caption(
+        f"LLM: `{LLM_MODEL}`"
+    )
+
+    st.caption(
+        "Embedding: MiniLM"
+    )
+
+    st.caption(
+        "Vector DB: Chroma"
+    )
+
+    st.caption(
+        "Runtime: Groq Cloud AI"
+    )
+
+    st.markdown("---")
+
+    # ========================================================
+    # LOGOUT
+    # ========================================================
+
+    if st.button(
+        "🚪 Logout",
+        use_container_width=True
+    ):
+
+        st.session_state.logged_in = False
+
+        st.session_state.messages = []
+
+        st.session_state.generated_image = None
+
+        st.session_state.image_prompt = ""
+
+        st.session_state.answer_cache = {}
+
+        st.rerun()
 
     st.markdown("---")
 
@@ -526,7 +696,9 @@ with st.sidebar:
 
         st.session_state.answer_cache = {}
 
-        st.success("Answer cache cleared.")
+        st.success(
+            "Answer cache cleared."
+        )
 
     if st.button(
         "🔄 Reload System",
@@ -684,7 +856,9 @@ st.markdown("---")
 # QUICK ACTION BUTTONS
 # ============================================================
 
-st.markdown("### ⚡ Quick Actions")
+st.markdown(
+    "### ⚡ Quick Actions"
+)
 
 q1, q2, q3, q4 = st.columns(4)
 
@@ -739,7 +913,10 @@ with q4:
 # RETRIEVE DOCUMENTS
 # ============================================================
 
-def retrieve_documents(question, k=3):
+def retrieve_documents(
+    question,
+    k=3
+):
 
     if vector_db is None:
 
@@ -796,13 +973,17 @@ def build_context(documents):
 
     parts = []
 
-    for index, doc in enumerate(documents):
+    for index, doc in enumerate(
+        documents
+    ):
 
         text = (
             doc.page_content or ""
         ).strip()
 
-        source = get_document_source(doc)
+        source = get_document_source(
+            doc
+        )
 
         text = text[:1500]
 
@@ -828,7 +1009,9 @@ def extract_sources(documents):
 
     for doc in documents:
 
-        source = get_document_source(doc)
+        source = get_document_source(
+            doc
+        )
 
         if source not in sources:
 
@@ -841,7 +1024,10 @@ def extract_sources(documents):
 # CREATE PROMPT
 # ============================================================
 
-def create_prompt(question, context):
+def create_prompt(
+    question,
+    context
+):
 
     return f"""
 You are an enterprise RAG assistant.
@@ -876,7 +1062,9 @@ ANSWER:
 # GENERATE ANSWER
 # ============================================================
 
-def generate_answer(question):
+def generate_answer(
+    question
+):
 
     if vector_db is None:
 
@@ -889,13 +1077,17 @@ def generate_answer(question):
     # CACHE CHECK
     # ========================================================
 
-    question_key = question.strip().lower()
+    question_key = (
+        question.strip().lower()
+    )
 
     if question_key in st.session_state.answer_cache:
 
-        cached = st.session_state.answer_cache[
-            question_key
-        ]
+        cached = (
+            st.session_state.answer_cache[
+                question_key
+            ]
+        )
 
         return (
             cached.get(
@@ -935,7 +1127,9 @@ def generate_answer(question):
         # CONTEXT
         # ====================================================
 
-        context = build_context(documents)
+        context = build_context(
+            documents
+        )
 
         # ====================================================
         # PROMPT
@@ -958,32 +1152,43 @@ def generate_answer(question):
                 "❌ Groq Cloud AI is not available.\n\n"
                 "Please configure `GROQ_API_KEY` "
                 "in Streamlit Cloud → Settings → Secrets.",
-                extract_sources(documents)
+                extract_sources(
+                    documents
+                )
             )
 
         # ====================================================
-        # GENERATE ANSWER USING GROQ
+        # GENERATE ANSWER
         # ====================================================
 
-        response = llm.invoke(prompt)
+        response = llm.invoke(
+            prompt
+        )
 
         # ====================================================
         # EXTRACT RESPONSE
         # ====================================================
 
-        if hasattr(response, "content"):
+        if hasattr(
+            response,
+            "content"
+        ):
 
             answer = response.content
 
         else:
 
-            answer = str(response)
+            answer = str(
+                response
+            )
 
         if answer is None:
 
             answer = ""
 
-        answer = str(answer).strip()
+        answer = str(
+            answer
+        ).strip()
 
         # ====================================================
         # EMPTY ANSWER PROTECTION
@@ -1006,7 +1211,7 @@ def generate_answer(question):
 
         # ====================================================
         # CACHE
-        # ====================================================
+        # ========================================================
 
         result = {
             "answer": answer,
@@ -1115,11 +1320,14 @@ def generate_answer(question):
 for message in st.session_state.messages:
 
     role = message["role"]
+
     content = message["content"]
 
     with st.chat_message(role):
 
-        st.markdown(content)
+        st.markdown(
+            content
+        )
 
         if (
             role == "assistant"
@@ -1176,7 +1384,9 @@ if question:
             if (
                 last_message["role"] == "user"
                 and
-                last_message["content"].strip().lower()
+                last_message["content"]
+                .strip()
+                .lower()
                 == question.lower()
             ):
 
@@ -1195,15 +1405,21 @@ if question:
                 }
             )
 
-            with st.chat_message("user"):
+            with st.chat_message(
+                "user"
+            ):
 
-                st.markdown(question)
+                st.markdown(
+                    question
+                )
 
             # ================================================
             # ASSISTANT
             # ================================================
 
-            with st.chat_message("assistant"):
+            with st.chat_message(
+                "assistant"
+            ):
 
                 question_key = (
                     question.lower().strip()
@@ -1238,7 +1454,9 @@ if question:
                     # EMPTY CACHE PROTECTION
                     # ========================================
 
-                    if not str(answer).strip():
+                    if not str(
+                        answer
+                    ).strip():
 
                         del st.session_state.answer_cache[
                             question_key
@@ -1304,9 +1522,13 @@ if question:
                 # DISPLAY ANSWER
                 # ============================================
 
-                st.markdown("### 🤖 Answer")
+                st.markdown(
+                    "### 🤖 Answer"
+                )
 
-                st.markdown(answer)
+                st.markdown(
+                    answer
+                )
 
                 # ============================================
                 # DISPLAY SOURCES
@@ -1391,6 +1613,7 @@ with st.expander(
     if clear_image_button:
 
         st.session_state.generated_image = None
+
         st.session_state.image_prompt = ""
 
         st.rerun()
@@ -1414,7 +1637,10 @@ with st.expander(
                 )
 
                 st.session_state.generated_image = svg
-                st.session_state.image_prompt = image_prompt
+
+                st.session_state.image_prompt = (
+                    image_prompt
+                )
 
             st.success(
                 "Image generated successfully!"
@@ -1554,9 +1780,14 @@ with st.expander(
     for index, (
         display_name,
         folder_name
-    ) in enumerate(categories.items()):
+    ) in enumerate(
+        categories.items()
+    ):
 
-        folder = DATA_DIR / folder_name
+        folder = (
+            DATA_DIR
+            / folder_name
+        )
 
         with cols[index % 2]:
 
