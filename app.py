@@ -1,6 +1,10 @@
+
 # ============================================================
 # RAG CHATBOT
-# LOGIN + FAST RAG + MODERN UI + BUTTONS + IMAGE GENERATOR
+# MULTI-USER LOGIN + ROLE-BASED ACCESS
+# ADMIN + USER
+# CHANGE PASSWORD
+# FAST RAG + MODERN UI + BUTTONS + IMAGE GENERATOR
 # Streamlit + Chroma + MiniLM + Groq Cloud LLM
 # ============================================================
 
@@ -10,6 +14,17 @@ import base64
 from pathlib import Path
 
 import streamlit as st
+
+from auth import (
+    verify_user,
+    create_user,
+    change_password,
+    get_user_role,
+    is_admin,
+    admin_reset_password,
+    get_all_users,
+    delete_user
+)
 
 from langchain_chroma import Chroma
 from langchain_huggingface import HuggingFaceEmbeddings
@@ -29,88 +44,201 @@ st.set_page_config(
 
 
 # ============================================================
-# LOGIN AUTHENTICATION
+# LOGIN AUTHENTICATION SESSION
 # ============================================================
 
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 
+if "username" not in st.session_state:
+    st.session_state.username = ""
+
+if "role" not in st.session_state:
+    st.session_state.role = ""
+
+
+# ============================================================
+# LOGIN PAGE
+# ============================================================
 
 def login_page():
 
     st.markdown(
         """
-        <style>
-
-        .login-container {
-            max-width: 450px;
-            margin: 120px auto 20px auto;
-            padding: 35px;
-            border-radius: 22px;
-            border: 1px solid rgba(128,128,128,0.25);
-            background: rgba(255,255,255,0.035);
-            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
-        }
-
-        </style>
+        <div style="
+            max-width:500px;
+            margin:80px auto 20px auto;
+            text-align:center;
+        ">
+            <h1>🤖 RAG Chatbot</h1>
+            <p>Enterprise AI Assistant</p>
+        </div>
         """,
         unsafe_allow_html=True
     )
 
-    with st.form("login_form"):
+    login_tab, register_tab = st.tabs(
+        ["🚀 Login", "📝 Register"]
+    )
 
-        username = st.text_input(
-            "👤 Username",
-            placeholder="Enter username"
-        )
+    # ========================================================
+    # LOGIN
+    # ========================================================
 
-        password = st.text_input(
-            "🔑 Password",
-            type="password",
-            placeholder="Enter password"
-        )
+    with login_tab:
 
-        login_button = st.form_submit_button(
-            "🚀 Login",
-            use_container_width=True
-        )
+        with st.form("login_form"):
 
-        if login_button:
+            username = st.text_input(
+                "👤 Username",
+                placeholder="Enter username",
+                key="login_username"
+            )
 
-            correct_username = str(
-                st.secrets.get(
-                    "USERNAME",
-                    ""
-                )
-            ).strip()
+            password = st.text_input(
+                "🔑 Password",
+                type="password",
+                placeholder="Enter password",
+                key="login_password"
+            )
 
-            correct_password = str(
-                st.secrets.get(
-                    "PASSWORD",
-                    ""
-                )
-            ).strip()
+            login_button = st.form_submit_button(
+                "🚀 Login",
+                use_container_width=True
+            )
 
-            if (
-                username.strip() == correct_username
-                and password == correct_password
-                and correct_username
-                and correct_password
-            ):
+            if login_button:
 
-                st.session_state.logged_in = True
+                username = username.strip()
 
-                st.rerun()
+                if not username or not password:
 
-            else:
+                    st.warning(
+                        "⚠️ Please enter both username and password."
+                    )
 
-                st.error(
-                    "❌ Invalid username or password."
-                )
+                elif verify_user(username, password):
+
+                    # ------------------------------------------------
+                    # LOGIN SUCCESS
+                    # ------------------------------------------------
+
+                    st.session_state.logged_in = True
+
+                    st.session_state.username = username
+
+                    # ------------------------------------------------
+                    # GET ROLE FROM DATABASE
+                    # ------------------------------------------------
+
+                    role = get_user_role(username)
+
+                    st.session_state.role = role or "user"
+
+                    st.success(
+                        "✅ Login successful!"
+                    )
+
+                    st.rerun()
+
+                else:
+
+                    st.error(
+                        "❌ Invalid username or password."
+                    )
+
+    # ========================================================
+    # REGISTER
+    # ========================================================
+
+    with register_tab:
+
+        with st.form("register_form"):
+
+            new_username = st.text_input(
+                "👤 Create Username",
+                placeholder="Enter a new username",
+                key="register_username"
+            )
+
+            new_password = st.text_input(
+                "🔑 Create Password",
+                type="password",
+                placeholder="Minimum 6 characters",
+                key="register_password"
+            )
+
+            confirm_password = st.text_input(
+                "🔑 Confirm Password",
+                type="password",
+                placeholder="Re-enter your password",
+                key="register_confirm_password"
+            )
+
+            register_button = st.form_submit_button(
+                "📝 Create Account",
+                use_container_width=True
+            )
+
+            if register_button:
+
+                new_username = new_username.strip()
+
+                if not new_username or not new_password:
+
+                    st.warning(
+                        "⚠️ Please fill in all fields."
+                    )
+
+                elif len(new_username) < 3:
+
+                    st.error(
+                        "❌ Username must contain at least 3 characters."
+                    )
+
+                elif len(new_password) < 6:
+
+                    st.error(
+                        "❌ Password must contain at least 6 characters."
+                    )
+
+                elif new_password != confirm_password:
+
+                    st.error(
+                        "❌ Passwords do not match."
+                    )
+
+                else:
+
+                    # --------------------------------------------
+                    # ALL SELF-REGISTERED ACCOUNTS ARE USERS
+                    # --------------------------------------------
+
+                    success, message = create_user(
+                        new_username,
+                        new_password,
+                        role="user"
+                    )
+
+                    if success:
+
+                        st.success(
+                            f"✅ {message}"
+                        )
+
+                        st.info(
+                            "You can now open the Login tab and sign in."
+                        )
+
+                    else:
+
+                        st.error(
+                            f"❌ {message}"
+                        )
 
 
 # ============================================================
-# SHOW LOGIN BEFORE CHATBOT
+# LOGIN GATE
 # ============================================================
 
 if not st.session_state.logged_in:
@@ -121,13 +249,45 @@ if not st.session_state.logged_in:
 
 
 # ============================================================
+# SECURITY CHECK
+# ============================================================
+# Refresh role from database after login.
+# This prevents relying only on browser session data.
+# ============================================================
+
+current_username = st.session_state.username.strip()
+
+current_role = get_user_role(
+    current_username
+)
+
+if current_role is None:
+
+    st.session_state.logged_in = False
+    st.session_state.username = ""
+    st.session_state.role = ""
+
+    st.error(
+        "❌ User account no longer exists."
+    )
+
+    st.stop()
+
+
+# Always use the database role
+st.session_state.role = current_role
+
+
+# ============================================================
 # PATHS
 # ============================================================
 
 BASE_DIR = Path(__file__).resolve().parent
 
 DATA_DIR = BASE_DIR / "data"
+
 CHROMA_DIR = BASE_DIR / "chroma_db"
+
 UPLOAD_DIR = DATA_DIR / "uploaded"
 
 EMBEDDING_MODEL = (
@@ -346,9 +506,7 @@ def load_llm():
         if api_key is None:
             return None
 
-        api_key = str(
-            api_key
-        ).strip()
+        api_key = str(api_key).strip()
 
         if not api_key:
             return None
@@ -560,7 +718,292 @@ with st.sidebar:
         "Fast RAG + Groq Cloud AI"
     )
 
+    # --------------------------------------------------------
+    # USER INFORMATION
+    # --------------------------------------------------------
+
+    if st.session_state.role == "admin":
+
+        st.success(
+            f"👑 Admin: "
+            f"{st.session_state.username}"
+        )
+
+    else:
+
+        st.info(
+            f"👤 User: "
+            f"{st.session_state.username}"
+        )
+
+    st.caption(
+        f"Role: `{st.session_state.role}`"
+    )
+
     st.markdown("---")
+
+
+    # ========================================================
+    # ADMIN PANEL
+    # ========================================================
+
+    if st.session_state.role == "admin":
+
+        with st.expander(
+            "👑 Admin Panel",
+            expanded=False
+        ):
+
+            st.markdown(
+                "### 👥 User Management"
+            )
+
+            # ------------------------------------------------
+            # GET ALL USERS
+            # ------------------------------------------------
+
+            users = get_all_users()
+
+            if users:
+
+                for username, role in users:
+
+                    col1, col2, col3 = st.columns(
+                        [3, 2, 2]
+                    )
+
+                    with col1:
+
+                        if username == st.session_state.username:
+
+                            st.write(
+                                f"👑 **{username}**"
+                            )
+
+                        else:
+
+                            st.write(
+                                f"👤 **{username}**"
+                            )
+
+                    with col2:
+
+                        st.write(
+                            f"`{role}`"
+                        )
+
+                    with col3:
+
+                        # ------------------------------------
+                        # ADMIN CANNOT DELETE ITSELF
+                        # ------------------------------------
+
+                        if (
+                            username
+                            != st.session_state.username
+                        ):
+
+                            if st.button(
+                                "🗑️ Delete",
+                                key=f"delete_user_{username}",
+                                use_container_width=True
+                            ):
+
+                                success, message = delete_user(
+                                    st.session_state.username,
+                                    username
+                                )
+
+                                if success:
+
+                                    st.success(
+                                        message
+                                    )
+
+                                    st.rerun()
+
+                                else:
+
+                                    st.error(
+                                        message
+                                    )
+
+            else:
+
+                st.info(
+                    "No users found."
+                )
+
+
+            st.markdown("---")
+
+
+            # ------------------------------------------------
+            # RESET USER PASSWORD
+            # ------------------------------------------------
+
+            st.markdown(
+                "### 🔑 Reset User Password"
+            )
+
+            target_user = st.text_input(
+                "Username",
+                placeholder="Enter username",
+                key="admin_target_user"
+            )
+
+            admin_new_password = st.text_input(
+                "New Password",
+                type="password",
+                placeholder="Enter new password",
+                key="admin_new_password"
+            )
+
+            admin_confirm_password = st.text_input(
+                "Confirm Password",
+                type="password",
+                placeholder="Confirm new password",
+                key="admin_confirm_password"
+            )
+
+            if st.button(
+                "🔐 Reset Password",
+                key="admin_reset_password",
+                use_container_width=True
+            ):
+
+                target_user = target_user.strip()
+
+                if not target_user:
+
+                    st.warning(
+                        "Please enter a username."
+                    )
+
+                elif not admin_new_password:
+
+                    st.warning(
+                        "Please enter a new password."
+                    )
+
+                elif admin_new_password != admin_confirm_password:
+
+                    st.error(
+                        "❌ Passwords do not match."
+                    )
+
+                elif len(admin_new_password) < 6:
+
+                    st.error(
+                        "❌ Password must contain at least 6 characters."
+                    )
+
+                else:
+
+                    success, message = admin_reset_password(
+                        st.session_state.username,
+                        target_user,
+                        admin_new_password
+                    )
+
+                    if success:
+
+                        st.success(
+                            f"✅ {message}"
+                        )
+
+                    else:
+
+                        st.error(
+                            f"❌ {message}"
+                        )
+
+
+        st.markdown("---")
+
+
+    # ========================================================
+    # CHANGE PASSWORD
+    # ========================================================
+
+    with st.expander(
+        "🔐 Change Password"
+    ):
+
+        old_password = st.text_input(
+            "Current Password",
+            type="password",
+            key="old_password"
+        )
+
+        new_password = st.text_input(
+            "New Password",
+            type="password",
+            key="new_password"
+        )
+
+        confirm_password = st.text_input(
+            "Confirm New Password",
+            type="password",
+            key="confirm_password"
+        )
+
+        if st.button(
+            "🔑 Change Password",
+            use_container_width=True
+        ):
+
+            if not old_password:
+
+                st.warning(
+                    "Enter your current password."
+                )
+
+            elif not new_password:
+
+                st.warning(
+                    "Enter a new password."
+                )
+
+            elif new_password != confirm_password:
+
+                st.error(
+                    "❌ New passwords do not match."
+                )
+
+            elif len(new_password) < 6:
+
+                st.error(
+                    "❌ Password must contain at least 6 characters."
+                )
+
+            else:
+
+                success, message = change_password(
+                    st.session_state.username,
+                    old_password,
+                    new_password
+                )
+
+                if success:
+
+                    st.success(
+                        "✅ Password changed successfully!"
+                    )
+
+                else:
+
+                    st.error(
+                        f"❌ {message}"
+                    )
+
+
+    st.markdown("---")
+
+
+    # ========================================================
+    # KNOWLEDGE BASE
+    # ========================================================
 
     st.markdown(
         "### 📚 Knowledge Base"
@@ -586,7 +1029,14 @@ with st.sidebar:
 
     st.markdown("---")
 
-    st.markdown("### ⚙️ System")
+
+    # ========================================================
+    # SYSTEM
+    # ========================================================
+
+    st.markdown(
+        "### ⚙️ System"
+    )
 
     if st.session_state.system_ready:
 
@@ -602,7 +1052,14 @@ with st.sidebar:
 
     st.markdown("---")
 
-    st.markdown("### 🧠 Models")
+
+    # ========================================================
+    # MODELS
+    # ========================================================
+
+    st.markdown(
+        "### 🧠 Models"
+    )
 
     st.caption(
         f"LLM: `{LLM_MODEL}`"
@@ -622,28 +1079,10 @@ with st.sidebar:
 
     st.markdown("---")
 
+
     # ========================================================
-    # LOGOUT
+    # CLEAR CHAT
     # ========================================================
-
-    if st.button(
-        "🚪 Logout",
-        use_container_width=True
-    ):
-
-        st.session_state.logged_in = False
-
-        st.session_state.messages = []
-
-        st.session_state.generated_image = None
-
-        st.session_state.image_prompt = ""
-
-        st.session_state.answer_cache = {}
-
-        st.rerun()
-
-    st.markdown("---")
 
     if st.button(
         "🗑️ Clear Chat",
@@ -653,6 +1092,11 @@ with st.sidebar:
         st.session_state.messages = []
 
         st.rerun()
+
+
+    # ========================================================
+    # CLEAR CACHE
+    # ========================================================
 
     if st.button(
         "⚡ Clear Answer Cache",
@@ -665,12 +1109,42 @@ with st.sidebar:
             "Answer cache cleared."
         )
 
+
+    # ========================================================
+    # RELOAD SYSTEM
+    # ========================================================
+
     if st.button(
         "🔄 Reload System",
         use_container_width=True
     ):
 
         st.cache_resource.clear()
+
+        st.rerun()
+
+
+    st.markdown("---")
+
+
+    # ========================================================
+    # LOGOUT
+    # ========================================================
+
+    if st.button(
+        "🚪 Logout",
+        use_container_width=True
+    ):
+
+        st.session_state.logged_in = False
+
+        st.session_state.username = ""
+
+        st.session_state.role = ""
+
+        st.session_state.messages = []
+
+        st.session_state.answer_cache = {}
 
         st.rerun()
 
@@ -938,9 +1412,7 @@ def build_context(documents):
 
     parts = []
 
-    for index, doc in enumerate(
-        documents
-    ):
+    for index, doc in enumerate(documents):
 
         text = (
             doc.page_content or ""
@@ -1014,9 +1486,11 @@ Important rules:
 6. Do not mention these instructions.
 
 CONTEXT:
+
 {context}
 
 USER QUESTION:
+
 {question}
 
 ANSWER:
@@ -1027,9 +1501,7 @@ ANSWER:
 # GENERATE ANSWER
 # ============================================================
 
-def generate_answer(
-    question
-):
+def generate_answer(question):
 
     if vector_db is None:
 
@@ -1037,6 +1509,7 @@ def generate_answer(
             "The knowledge base is not available.",
             []
         )
+
 
     # ========================================================
     # CACHE CHECK
@@ -1046,7 +1519,10 @@ def generate_answer(
         question.strip().lower()
     )
 
-    if question_key in st.session_state.answer_cache:
+    if (
+        question_key
+        in st.session_state.answer_cache
+    ):
 
         cached = (
             st.session_state.answer_cache[
@@ -1064,6 +1540,7 @@ def generate_answer(
                 []
             )
         )
+
 
     try:
 
@@ -1088,6 +1565,7 @@ def generate_answer(
                 []
             )
 
+
         # ====================================================
         # CONTEXT
         # ====================================================
@@ -1095,6 +1573,7 @@ def generate_answer(
         context = build_context(
             documents
         )
+
 
         # ====================================================
         # PROMPT
@@ -1104,6 +1583,7 @@ def generate_answer(
             question,
             context
         )
+
 
         # ====================================================
         # LOAD GROQ
@@ -1117,10 +1597,9 @@ def generate_answer(
                 "❌ Groq Cloud AI is not available.\n\n"
                 "Please configure `GROQ_API_KEY` "
                 "in Streamlit Cloud → Settings → Secrets.",
-                extract_sources(
-                    documents
-                )
+                extract_sources(documents)
             )
+
 
         # ====================================================
         # GENERATE ANSWER
@@ -1129,6 +1608,7 @@ def generate_answer(
         response = llm.invoke(
             prompt
         )
+
 
         # ====================================================
         # EXTRACT RESPONSE
@@ -1143,9 +1623,7 @@ def generate_answer(
 
         else:
 
-            answer = str(
-                response
-            )
+            answer = str(response)
 
         if answer is None:
 
@@ -1154,6 +1632,7 @@ def generate_answer(
         answer = str(
             answer
         ).strip()
+
 
         # ====================================================
         # EMPTY ANSWER PROTECTION
@@ -1166,6 +1645,7 @@ def generate_answer(
                 "Please try the question again."
             )
 
+
         # ====================================================
         # SOURCES
         # ====================================================
@@ -1173,6 +1653,7 @@ def generate_answer(
         sources = extract_sources(
             documents
         )
+
 
         # ====================================================
         # CACHE
@@ -1191,6 +1672,7 @@ def generate_answer(
             answer,
             sources
         )
+
 
     except Exception as e:
 
@@ -1213,9 +1695,10 @@ def generate_answer(
 
         error_text = str(e)
 
-        # ----------------------------------------------------
+
+        # ====================================================
         # GROQ AUTHENTICATION ERROR
-        # ----------------------------------------------------
+        # ====================================================
 
         if (
             "401" in error_text
@@ -1231,9 +1714,10 @@ def generate_answer(
                 sources
             )
 
-        # ----------------------------------------------------
+
+        # ====================================================
         # GROQ RATE LIMIT
-        # ----------------------------------------------------
+        # ====================================================
 
         if (
             "429" in error_text
@@ -1248,16 +1732,20 @@ def generate_answer(
                 sources
             )
 
-        # ----------------------------------------------------
+
+        # ====================================================
         # MODEL ERROR
-        # ----------------------------------------------------
+        # ====================================================
 
         if (
             "model" in error_text.lower()
             and (
-                "not found" in error_text.lower()
-                or "decommissioned" in error_text.lower()
-                or "deprecated" in error_text.lower()
+                "not found"
+                in error_text.lower()
+                or "decommissioned"
+                in error_text.lower()
+                or "deprecated"
+                in error_text.lower()
             )
         ):
 
@@ -1268,12 +1756,14 @@ def generate_answer(
                 sources
             )
 
-        # ----------------------------------------------------
+
+        # ====================================================
         # GENERIC ERROR
-        # ----------------------------------------------------
+        # ====================================================
 
         return (
-            f"Sorry, an error occurred:\n\n{error_text}",
+            f"Sorry, an error occurred:\n\n"
+            f"{error_text}",
             sources
         )
 
@@ -1303,7 +1793,9 @@ for message in st.session_state.messages:
                 "📚 Document Sources"
             ):
 
-                for source in message["sources"]:
+                for source in message[
+                    "sources"
+                ]:
 
                     st.markdown(
                         f"- 📄 `{source}`"
@@ -1347,21 +1839,23 @@ if question:
             )
 
             if (
-                last_message["role"] == "user"
+                last_message["role"]
+                == "user"
                 and
-                last_message["content"]
-                .strip()
-                .lower()
+                last_message[
+                    "content"
+                ].strip().lower()
                 == question.lower()
             ):
 
                 duplicate = True
 
+
         if not duplicate:
 
-            # ================================================
+            # =================================================
             # USER MESSAGE
-            # ================================================
+            # =================================================
 
             st.session_state.messages.append(
                 {
@@ -1378,9 +1872,10 @@ if question:
                     question
                 )
 
-            # ================================================
+
+            # =================================================
             # ASSISTANT
-            # ================================================
+            # =================================================
 
             with st.chat_message(
                 "assistant"
@@ -1390,9 +1885,10 @@ if question:
                     question.lower().strip()
                 )
 
-                # ============================================
+
+                # =============================================
                 # CACHE HIT
-                # ============================================
+                # =============================================
 
                 if (
                     question_key
@@ -1415,17 +1911,20 @@ if question:
                         []
                     )
 
-                    # ========================================
+
+                    # =========================================
                     # EMPTY CACHE PROTECTION
-                    # ========================================
+                    # =========================================
 
                     if not str(
                         answer
                     ).strip():
 
-                        del st.session_state.answer_cache[
-                            question_key
-                        ]
+                        del (
+                            st.session_state.answer_cache[
+                                question_key
+                            ]
+                        )
 
                         start_time = time.time()
 
@@ -1455,9 +1954,10 @@ if question:
                             "⚡ Instant answer from cache"
                         )
 
-                # ============================================
+
+                # =============================================
                 # NEW QUESTION
-                # ============================================
+                # =============================================
 
                 else:
 
@@ -1483,9 +1983,10 @@ if question:
                         f"{elapsed:.2f} seconds"
                     )
 
-                # ============================================
+
+                # =============================================
                 # DISPLAY ANSWER
-                # ============================================
+                # =============================================
 
                 st.markdown(
                     "### 🤖 Answer"
@@ -1495,9 +1996,10 @@ if question:
                     answer
                 )
 
-                # ============================================
+
+                # =============================================
                 # DISPLAY SOURCES
-                # ============================================
+                # =============================================
 
                 if sources:
 
@@ -1516,6 +2018,7 @@ if question:
                     st.caption(
                         "📚 No document source metadata was found."
                     )
+
 
             # =================================================
             # SAVE ASSISTANT MESSAGE
@@ -1583,6 +2086,7 @@ with st.expander(
 
         st.rerun()
 
+
     if generate_image_button:
 
         if not image_prompt.strip():
@@ -1610,6 +2114,7 @@ with st.expander(
             st.success(
                 "Image generated successfully!"
             )
+
 
     if st.session_state.generated_image:
 
@@ -1754,7 +2259,9 @@ with st.expander(
             / folder_name
         )
 
-        with cols[index % 2]:
+        with cols[
+            index % 2
+        ]:
 
             st.markdown(
                 f"### {display_name}"
@@ -1865,3 +2372,4 @@ st.caption(
     "RAG + Chroma + HuggingFace + Groq Cloud LLM | "
     "Fast AI"
 )
+
