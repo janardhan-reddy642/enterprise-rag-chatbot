@@ -44,42 +44,15 @@ def login_page():
 
         .login-container {
             max-width: 450px;
-            margin: 90px auto 20px auto;
+            margin: 120px auto 20px auto;
             padding: 35px;
             border-radius: 22px;
             border: 1px solid rgba(128,128,128,0.25);
             background: rgba(255,255,255,0.035);
-            text-align: center;
             box-shadow: 0 10px 40px rgba(0,0,0,0.15);
         }
 
-        .login-title {
-            font-size: 34px;
-            font-weight: 800;
-            margin-bottom: 5px;
-        }
-
-        .login-subtitle {
-            font-size: 15px;
-            opacity: 0.65;
-            margin-bottom: 25px;
-        }
-
         </style>
-
-        <div class="login-container">
-
-            <div class="login-title">
-                🤖 RAG Chatbot
-            </div>
-
-            <div class="login-subtitle">
-                Enterprise AI Assistant
-                <br>
-                Please login to continue
-            </div>
-
-        </div>
         """,
         unsafe_allow_html=True
     )
@@ -104,22 +77,18 @@ def login_page():
 
         if login_button:
 
-            correct_username = st.secrets.get(
-                "USERNAME",
-                ""
-            )
-
-            correct_password = st.secrets.get(
-                "PASSWORD",
-                ""
-            )
-
             correct_username = str(
-                correct_username
+                st.secrets.get(
+                    "USERNAME",
+                    ""
+                )
             ).strip()
 
             correct_password = str(
-                correct_password
+                st.secrets.get(
+                    "PASSWORD",
+                    ""
+                )
             ).strip()
 
             if (
@@ -130,10 +99,6 @@ def login_page():
             ):
 
                 st.session_state.logged_in = True
-
-                st.success(
-                    "✅ Login successful!"
-                )
 
                 st.rerun()
 
@@ -1211,7 +1176,7 @@ def generate_answer(
 
         # ====================================================
         # CACHE
-        # ========================================================
+        # ====================================================
 
         result = {
             "answer": answer,
